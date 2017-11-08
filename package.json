@@ -1,0 +1,32 @@
+{
+  "name": "Maze-Life",
+  "version": "1.0.0",
+  "description": "Visualization of pathfinding algorithms",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aarron-lee/Maze-Life.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aarron-lee/Maze-Life/issues"
+  },
+  "homepage": "https://github.com/aarron-lee/Maze-Life#readme",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "webpack": "^3.8.1"
+  },
+  "scripts": {
+    "build": "webpack --watch"
+  }
+}
