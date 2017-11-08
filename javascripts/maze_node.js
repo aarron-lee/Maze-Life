@@ -8,32 +8,48 @@ class MazeNode{
     this.directions.forEach(direction =>{
       this.walls[direction] = true;
     });
+
+    this.htmlnode = document.createElement('div');
+    this.htmlnode.classList.add("maze-node");
+    this.htmlnode.id = `node-${pos[0]}-${pos[1]}`;
+    this.setWalls();
   }
 
   carveWall(direction){
     if(direction && this.directions.includes(direction)){
       this.walls[direction] = false;
+      this.resetWalls();
+      this.setWalls();
       return direction;
     }
     return null;
   }
 
-  print(){
-    let style = "";
+  node(){
+    return this.htmlnode;
+  }
+
+  setWalls(){
     if(this.walls["N"]){
-      style+= " border-top: 1px solid black;";
+      this.htmlnode.classList.add("north-wall");
     }
     if(this.walls["S"]){
-      style+= " border-bottom: 1px solid black;";
+      this.htmlnode.classList.add("south-wall");
     }
     if(this.walls["E"]){
-      style+= " border-right: 1px solid black;";
+      this.htmlnode.classList.add("east-wall");
     }
     if(this.walls["W"]){
-      style+= " border-left: 1px solid black;";
+      this.htmlnode.classList.add("west-wall");
     }
+  }
 
-    return `<div class="maze-node" id="node-${this.pos[0]}-${this.pos[1]}" style="${style}"></div>`
+  resetWalls(){
+    let classes = ["north-wall", "south-wall", "east-wall", "west-wall"];
+
+    classes.forEach( c => {
+      this.htmlnode.classList.remove(c);
+    });
   }
 
 }
