@@ -7,3 +7,22 @@ body{
   left:0;
   right:0;
 }
+
+
+.maze-node{
+  width: 30px;
+  height: 30px;
+}
+
+.maze-node.north-wall{
+  border-top: 1px solid black;
+}
+.maze-node.south-wall{
+  border-bottom: 1px solid black;
+}
+.maze-node.east-wall{
+  border-right: 1px solid black;
+}
+.maze-node.west-wall{
+  border-left: 1px solid black;
+}
