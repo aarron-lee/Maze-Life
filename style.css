@@ -12,6 +12,7 @@ body{
 .maze-node{
   width: 30px;
   height: 30px;
+  box-sizing: border-box;
 }
 
 .maze-node.north-wall{
@@ -25,4 +26,14 @@ body{
 }
 .maze-node.west-wall{
   border-left: 1px solid black;
+}
+
+.maze-grid{
+  display: flex;
+  flex-direction: column;
+}
+
+div[id*="row-"]{
+  display: flex;
+  flex-direction: row;
 }
