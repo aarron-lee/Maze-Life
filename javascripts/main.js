@@ -11,5 +11,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   window.grid = new MazeGrid();
 
+  root.appendChild(grid.grid);
+
 
 });

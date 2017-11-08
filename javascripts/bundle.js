@@ -87,6 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
   window.mount = document.querySelector('#root');
 
   window.grid = new _maze_grid2.default();
+
+  root.appendChild(grid.grid);
 });
 
 /***/ }),
@@ -197,6 +199,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var MazeGrid = function () {
   // origin is top left, [0][0]
+  // [row][col]
   function MazeGrid() {
     var dimensions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;
 
@@ -231,7 +234,63 @@ var MazeGrid = function () {
   }, {
     key: 'carveWall',
     value: function carveWall(pos, direction) {
-      this.mazeNodes[pos[0]][pos[1]].carveWall(direction);
+      if (this.validPos(pos)) {
+        this.mazeNodes[pos[0]][pos[1]].carveWall(direction);
+        var nextPos = this.nextPos(pos, direction);
+        if (nextPos) {
+          nextPos.carveWall(this.oppositeDirection(direction));
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: 'oppositeDirection',
+    value: function oppositeDirection(direction) {
+      if (direction == "N") {
+        return "S";
+      }
+      if (direction == "S") {
+        return "N";
+      }
+      if (direction == "E") {
+        return "W";
+      }
+      if (direction == "W") {
+        return "E";
+      }
+    }
+  }, {
+    key: 'nextPos',
+    value: function nextPos(currentPos, direction) {
+      var nextPos = [currentPos[0], currentPos[1]];
+      if (direction == "N") {
+        nextPos[0] -= 1;
+      } else if (direction == "S") {
+        nextPos[0] += 1;
+      } else if (direction == "E") {
+        nextPos[1] += 1;
+      } else if (direction == "W") {
+        nextPos[1] -= 1;
+      }
+      if (this.validPos(nextPos)) {
+        return this.mazeNodes[nextPos[0]][nextPos[1]];
+      }
+      return null;
+    }
+  }, {
+    key: 'validPos',
+    value: function validPos(pos) {
+      if (pos[0] && pos[1]) {
+        if (pos[0] >= this.dimensions || pos[0] < 0) {
+          return false;
+        }
+        if (pos[1] >= this.dimensions || pos[1] < 0) {
+          return false;
+        }
+      }
+      return true;
     }
   }]);
 

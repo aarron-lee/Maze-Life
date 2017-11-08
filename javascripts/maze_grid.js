@@ -2,6 +2,7 @@ import MazeNode from './maze_node';
 
 class MazeGrid{
   // origin is top left, [0][0]
+  // [row][col]
   constructor(dimensions=8){
     this.mazeNodes = new Array(dimensions);
     for(let idx = 0; idx < dimensions; idx++){
@@ -32,7 +33,60 @@ class MazeGrid{
 
 
   carveWall(pos, direction){
-    this.mazeNodes[pos[0]][pos[1]].carveWall(direction)
+    if(this.validPos(pos)){
+      this.mazeNodes[pos[0]][pos[1]].carveWall(direction)
+      let nextPos = this.nextPos(pos, direction);
+      if(nextPos){
+        nextPos.carveWall(this.oppositeDirection(direction));
+      }
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  oppositeDirection(direction){
+    if(direction == "N"){
+      return "S";
+    }
+    if(direction == "S"){
+      return "N";
+    }
+    if(direction == "E"){
+      return "W";
+    }
+    if(direction == "W"){
+      return "E";
+    }
+  }
+
+  nextPos(currentPos, direction){
+    let nextPos = [ currentPos[0], currentPos[1] ];
+    if(direction == "N"){
+      nextPos[0]-= 1;
+    }else if (direction == "S") {
+      nextPos[0]+= 1;
+    }else if (direction == "E") {
+      nextPos[1]+= 1;
+    }else if (direction == "W") {
+      nextPos[1]-= 1;
+    }
+    if(this.validPos(nextPos)){
+      return this.mazeNodes[nextPos[0]][nextPos[1]];
+    }
+    return null;
+  }
+
+  validPos(pos){
+    if(pos[0] && pos[1]){
+      if(pos[0] >= this.dimensions || pos[0] < 0){
+        return false;
+      }
+      if(pos[1] >= this.dimensions || pos[1] < 0){
+        return false;
+      }
+    }
+    return true;
   }
 
 
