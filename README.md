@@ -6,7 +6,7 @@ This project will visually show path traversal algorithms through a randomly gen
 
 ## Technlogies, Libraries, APIs
 
-I plan on using vanilla ES6 Javascript, HTML, and CSS, for to implement this project. I'll need Webpack for to provide Babel transpilers for to ensure ES6 compatibility.
+I plan on using vanilla ES6 Javascript, React, HTML, and CSS, for to implement this project. I'll need Webpack for to provide Babel transpilers for to ensure ES6 compatibility, as well as React-related dependencies.
 
 ## Layout / UI
 
