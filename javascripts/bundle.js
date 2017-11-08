@@ -104,45 +104,21 @@ var MazeNode = function () {
 
     this.pos = pos;
     this.walls = {};
-
+    this.visited = false;
     this.directions = ["N", "S", "E", "W"];
-
     this.directions.forEach(function (direction) {
-      _this.walls[direction] = false;
+      _this.walls[direction] = true;
     });
   }
 
   _createClass(MazeNode, [{
-    key: "fillRandomWall",
-    value: function fillRandomWall() {
-      var direction = this.getRandomDirection();
-      if (direction) {
-        this.walls[direction] = true;
-        this.updateDirections(direction);
+    key: "carveWall",
+    value: function carveWall(direction) {
+      if (direction && this.directions.includes(direction)) {
+        this.walls[direction] = false;
         return direction;
       }
       return null;
-    }
-  }, {
-    key: "updateDirections",
-    value: function updateDirections(direction) {
-      var newDirections = [];
-
-      this.directions.forEach(function (d) {
-        if (d !== direction) {
-          newDirections.push(d);
-        }
-      });
-
-      this.directions = newDirections;
-    }
-  }, {
-    key: "getRandomDirection",
-    value: function getRandomDirection() {
-      if (this.directions.length === 0) {
-        return null;
-      }
-      return this.directions[Math.floor(Math.random() * this.directions.length)];
     }
   }]);
 

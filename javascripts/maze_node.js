@@ -3,45 +3,20 @@ class MazeNode{
   constructor(pos){
     this.pos = pos;
     this.walls = {};
-
+    this.visited = false;
     this.directions = ["N", "S", "E", "W"];
-
     this.directions.forEach(direction =>{
-      this.walls[direction] = false;
+      this.walls[direction] = true;
     });
   }
 
-  fillRandomWall(){
-    let direction = this.getRandomDirection();
-    if(direction){
-      this.walls[direction] = true;
-      this.updateDirections(direction);
+  carveWall(direction){
+    if(direction && this.directions.includes(direction)){
+      this.walls[direction] = false;
       return direction;
     }
     return null;
   }
-
-  updateDirections(direction){
-    let newDirections = [];
-
-    this.directions.forEach(d =>{
-      if (d !== direction){
-        newDirections.push(d);
-      }
-    });
-
-    this.directions = newDirections;
-  }
-
-  getRandomDirection(){
-    if(this.directions.length === 0){
-      return null;
-    }
-    return this.directions[Math.floor(Math.random() * this.directions.length)];
-  }
-
-
-
 }
 
 export default MazeNode;
