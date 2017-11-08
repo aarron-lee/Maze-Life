@@ -98,15 +98,51 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var MazeNode = function () {
   function MazeNode(pos) {
+    var _this = this;
+
     _classCallCheck(this, MazeNode);
 
     this.pos = pos;
+    this.walls = {};
+
+    this.directions = ["N", "S", "E", "W"];
+
+    this.directions.forEach(function (direction) {
+      _this.walls[direction] = false;
+    });
   }
 
   _createClass(MazeNode, [{
-    key: "pos",
-    value: function pos() {
-      return this.pos;
+    key: "fillRandomWall",
+    value: function fillRandomWall() {
+      var direction = this.getRandomDirection();
+      if (direction) {
+        this.walls[direction] = true;
+        this.updateDirections(direction);
+        return direction;
+      }
+      return null;
+    }
+  }, {
+    key: "updateDirections",
+    value: function updateDirections(direction) {
+      var newDirections = [];
+
+      this.directions.forEach(function (d) {
+        if (d !== direction) {
+          newDirections.push(d);
+        }
+      });
+
+      this.directions = newDirections;
+    }
+  }, {
+    key: "getRandomDirection",
+    value: function getRandomDirection() {
+      if (this.directions.length === 0) {
+        return null;
+      }
+      return this.directions[Math.floor(Math.random() * this.directions.length)];
     }
   }]);
 
