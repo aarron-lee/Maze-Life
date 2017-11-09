@@ -77,6 +77,15 @@ class MazeNode{
     });
   }
 
+  resetNode(){
+    this.directions.forEach(direction =>{
+      this.walls[direction] = true;
+    });
+
+    this.setWalls();
+    this.disableActive();
+  }
+
 }
 
 export default MazeNode;

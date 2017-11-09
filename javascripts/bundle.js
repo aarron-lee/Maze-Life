@@ -170,6 +170,18 @@ var MazeNode = function () {
         _this2.htmlnode.classList.remove(c);
       });
     }
+  }, {
+    key: "resetNode",
+    value: function resetNode() {
+      var _this3 = this;
+
+      this.directions.forEach(function (direction) {
+        _this3.walls[direction] = true;
+      });
+
+      this.setWalls();
+      this.disableActive();
+    }
   }]);
 
   return MazeNode;
@@ -194,20 +206,30 @@ var _maze_grid2 = _interopRequireDefault(_maze_grid);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-document.addEventListener("DOMContentLoaded", function () {
-
-  // window.node = new MazeNode([1,2]);
-
-  var root = document.querySelector('#root');
-
-  var maze = new _maze_grid2.default(15);
+var handleMazeExtras = function handleMazeExtras(maze) {
 
   var generateMazeForm = document.querySelector('#generate-maze-form');
 
   generateMazeForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    maze.generateMaze(parseInt(e.currentTarget[1].value));
+    maze.generateMaze(parseInt(e.currentTarget[0].value));
   });
+
+  var resetMazeButton = document.querySelector('#reset-maze-button');
+
+  resetMazeButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    maze.resetMaze();
+  });
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  var root = document.querySelector('#root');
+
+  var maze = new _maze_grid2.default(15);
+
+  handleMazeExtras(maze);
 
   root.appendChild(maze.grid);
 });
@@ -263,6 +285,15 @@ var MazeGrid = function () {
   }
 
   _createClass(MazeGrid, [{
+    key: 'resetMaze',
+    value: function resetMaze() {
+      for (var i = 0; i < this.dimensions; i++) {
+        for (var j = 0; j < this.dimensions; j++) {
+          this.mazeNodes[i][j].resetNode();
+        }
+      }
+    }
+  }, {
     key: 'generateMaze',
     value: function generateMaze() {
       var intervalMs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;

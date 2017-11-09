@@ -26,6 +26,14 @@ class MazeGrid{
     this.mazeSteps = [];
   }
 
+  resetMaze(){
+    for(let i = 0 ; i < this.dimensions ; i++){
+      for(let j = 0; j < this.dimensions; j++){
+        this.mazeNodes[i][j].resetNode();
+      }
+    }
+  }
+
   generateMaze(intervalMs=100, startingPos=[0,0]){
 
     this.createMaze(startingPos);
