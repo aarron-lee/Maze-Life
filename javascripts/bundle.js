@@ -202,11 +202,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var maze = new _maze_grid2.default(15);
 
-  var genMazeButton = document.querySelector('#generate-maze-button');
+  var generateMazeForm = document.querySelector('#generate-maze-form');
 
-  genMazeButton.addEventListener("click", function (e) {
+  generateMazeForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    maze.generateMaze();
+    maze.generateMaze(parseInt(e.currentTarget[1].value));
   });
 
   root.appendChild(maze.grid);
@@ -265,8 +265,8 @@ var MazeGrid = function () {
   _createClass(MazeGrid, [{
     key: 'generateMaze',
     value: function generateMaze() {
-      var startingPos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
-      var intervalMs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
+      var intervalMs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
+      var startingPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
 
 
       this.createMaze(startingPos);

@@ -29,6 +29,15 @@ body{
   flex-direction: column;
 }
 
+#maze-form-container > form{
+  display: flex;
+  flex-direction: column;
+}
+
+#maze-speed-slider{
+  margin: 10px;
+}
+
 button{
   padding: 15px;
   background-color: #40a0c7;

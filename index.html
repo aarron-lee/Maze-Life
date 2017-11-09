@@ -16,8 +16,12 @@
 
     <div class="app-col">
 
-        <button id="generate-maze-button">Generate Maze</button>
-
+      <div id="maze-form-container">
+        <form id="generate-maze-form">
+          <button id="generate-maze-button">Generate Maze</button>
+          <input type="range" min="1" max="100" value="50" class="slider" id="maze-speed-slider">
+        </form>
+      </div>
       <div id="root">
       </div>
     </div>

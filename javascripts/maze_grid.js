@@ -26,7 +26,7 @@ class MazeGrid{
     this.mazeSteps = [];
   }
 
-  generateMaze(startingPos=[0,0], intervalMs=100){
+  generateMaze(intervalMs=100, startingPos=[0,0]){
 
     this.createMaze(startingPos);
 

@@ -11,11 +11,11 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   let maze = new MazeGrid(15);
 
-  let genMazeButton = document.querySelector('#generate-maze-button');
+  let generateMazeForm = document.querySelector('#generate-maze-form');
 
-  genMazeButton.addEventListener("click", (e)=>{
+  generateMazeForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    maze.generateMaze();
+    maze.generateMaze(parseInt(e.currentTarget[1].value));
   });
 
   root.appendChild(maze.grid);
