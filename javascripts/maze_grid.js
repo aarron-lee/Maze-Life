@@ -20,6 +20,7 @@ class MazeGrid{
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
     this.createMaze = this.createMaze.bind(this);
+    this.animateMazeCreation = this.animateMazeCreation.bind(this);
 
 
     this.mazeSteps = [];
@@ -31,6 +32,11 @@ class MazeGrid{
 
     this.resetVisited();
 
+    this.animateMazeCreation(intervalMs);
+
+  }
+
+  animateMazeCreation(intervalMs){
     let i = 0;
 
     let intervalId = null;
@@ -46,7 +52,6 @@ class MazeGrid{
         this.mazeSteps = [];
       }
     }, intervalMs);
-
   }
 
   resetVisited(){

@@ -242,6 +242,7 @@ var MazeGrid = function () {
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
     this.createMaze = this.createMaze.bind(this);
+    this.animateMazeCreation = this.animateMazeCreation.bind(this);
 
     this.mazeSteps = [];
   }
@@ -249,8 +250,6 @@ var MazeGrid = function () {
   _createClass(MazeGrid, [{
     key: 'generateMaze',
     value: function generateMaze() {
-      var _this = this;
-
       var startingPos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
       var intervalMs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
 
@@ -258,6 +257,13 @@ var MazeGrid = function () {
       this.createMaze(startingPos);
 
       this.resetVisited();
+
+      this.animateMazeCreation(intervalMs);
+    }
+  }, {
+    key: 'animateMazeCreation',
+    value: function animateMazeCreation(intervalMs) {
+      var _this = this;
 
       var i = 0;
 
