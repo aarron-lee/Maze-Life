@@ -15,6 +15,35 @@ let handleMazeExtras = (maze) => {
 
 };
 
+
+let handleSearchExtras = (maze) => {
+
+  let generateMazeButton = document.querySelector('#generate-maze-button');
+  let dfsButton = document.querySelector('#dfs');
+  let bfsButton = document.querySelector('#bfs');
+
+  dfsButton.addEventListener("click", (e)=>{
+    e.preventDefault();
+    generateMazeButton.disabled = true;
+    dfsButton.disabled = true;
+    bfsButton.disabled = true;
+    let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    maze.dfs(buttonsToEnable);
+  });
+
+  bfsButton.addEventListener("click", (e)=>{
+    e.preventDefault();
+    generateMazeButton.disabled = true;
+    dfsButton.disabled = true;
+    bfsButton.disabled = true;
+    let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    maze.bfs(buttonsToEnable);
+  });
+
+
+}
+
+
 document.addEventListener("DOMContentLoaded", () =>{
 
   let root = document.querySelector('#root');
@@ -22,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () =>{
   window.maze = new MazeGrid(60);
 
   handleMazeExtras(maze);
+
+  handleSearchExtras(maze);
 
   root.appendChild(maze.grid);
 

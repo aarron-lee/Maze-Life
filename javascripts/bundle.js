@@ -264,6 +264,31 @@ var handleMazeExtras = function handleMazeExtras(maze) {
   });
 };
 
+var handleSearchExtras = function handleSearchExtras(maze) {
+
+  var generateMazeButton = document.querySelector('#generate-maze-button');
+  var dfsButton = document.querySelector('#dfs');
+  var bfsButton = document.querySelector('#bfs');
+
+  dfsButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    generateMazeButton.disabled = true;
+    dfsButton.disabled = true;
+    bfsButton.disabled = true;
+    var buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    maze.dfs(buttonsToEnable);
+  });
+
+  bfsButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    generateMazeButton.disabled = true;
+    dfsButton.disabled = true;
+    bfsButton.disabled = true;
+    var buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    maze.bfs(buttonsToEnable);
+  });
+};
+
 document.addEventListener("DOMContentLoaded", function () {
 
   var root = document.querySelector('#root');
@@ -271,6 +296,8 @@ document.addEventListener("DOMContentLoaded", function () {
   window.maze = new _maze_grid2.default(60);
 
   handleMazeExtras(maze);
+
+  handleSearchExtras(maze);
 
   root.appendChild(maze.grid);
 });
@@ -353,7 +380,7 @@ var MazeGrid = function () {
     }
   }, {
     key: 'dfs',
-    value: function dfs(endPos) {
+    value: function dfs(buttonsToEnable, endPos) {
       this.resetPaths();
 
       if (!endPos) {
@@ -363,11 +390,11 @@ var MazeGrid = function () {
       var stack = [];
       var foundNode = this.dfsearch([0, 0], endPos, stack);
 
-      this.animateVisitedPath(foundNode);
+      this.animateVisitedPath(foundNode, buttonsToEnable);
     }
   }, {
     key: 'bfs',
-    value: function bfs(endPos) {
+    value: function bfs(buttonsToEnable, endPos) {
       this.resetPaths();
 
       if (!endPos) {
@@ -376,7 +403,7 @@ var MazeGrid = function () {
 
       var queue = [];
       var foundNode = this.bfsearch([0, 0], endPos, queue);
-      this.animateVisitedPath(foundNode);
+      this.animateVisitedPath(foundNode, buttonsToEnable);
     }
 
     /*  internal use methods   */
@@ -460,7 +487,7 @@ var MazeGrid = function () {
     }
   }, {
     key: 'animateVisitedPath',
-    value: function animateVisitedPath(foundNode) {
+    value: function animateVisitedPath(foundNode, buttonsToEnable) {
       var _this2 = this;
 
       var visitedPath = this.visitedPath;
@@ -477,13 +504,13 @@ var MazeGrid = function () {
           i += 1;
         } else {
           clearInterval(intervalId);
-          _this2.animateFoundPath(foundNode);
+          _this2.animateFoundPath(foundNode, buttonsToEnable);
         }
       }, 1);
     }
   }, {
     key: 'animateFoundPath',
-    value: function animateFoundPath(foundNode) {
+    value: function animateFoundPath(foundNode, buttonsToEnable) {
       var _this3 = this;
 
       var foundPath = [];
@@ -502,6 +529,9 @@ var MazeGrid = function () {
         } else {
           clearInterval(intervalId);
           _this3.getNode([0, 0]).setPath();
+          buttonsToEnable.forEach(function (button) {
+            button.disabled = false;
+          });
         }
       }, 5);
     }

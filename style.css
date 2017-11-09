@@ -40,7 +40,7 @@ body{
 }
 
 
-#generate-maze-button:disabled{
+button:disabled{
   background-color: skyblue;
 }
 

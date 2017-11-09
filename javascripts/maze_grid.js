@@ -48,7 +48,7 @@ class MazeGrid{
     }
   }
 
-  dfs(endPos){
+  dfs(buttonsToEnable, endPos){
     this.resetPaths();
 
     if(!endPos){
@@ -58,12 +58,10 @@ class MazeGrid{
     let stack = [];
     let foundNode = this.dfsearch([0,0], endPos, stack);
 
-    this.animateVisitedPath(foundNode);
-
-
+    this.animateVisitedPath(foundNode, buttonsToEnable);
   }
 
-  bfs(endPos){
+  bfs(buttonsToEnable, endPos){
     this.resetPaths();
 
     if(!endPos){
@@ -72,7 +70,7 @@ class MazeGrid{
 
     let queue = [];
     let foundNode = this.bfsearch([0,0], endPos, queue);
-    this.animateVisitedPath(foundNode);
+    this.animateVisitedPath(foundNode, buttonsToEnable);
   }
 
   /*  internal use methods   */
@@ -152,7 +150,7 @@ class MazeGrid{
     }
   }
 
-  animateVisitedPath(foundNode){
+  animateVisitedPath(foundNode, buttonsToEnable){
     let visitedPath = this.visitedPath;
 
     let i = 0;
@@ -167,12 +165,12 @@ class MazeGrid{
         i+=1;
       }else{
         clearInterval(intervalId);
-        this.animateFoundPath(foundNode);
+        this.animateFoundPath(foundNode, buttonsToEnable);
       }
     }, 1);
   }
 
-  animateFoundPath(foundNode){
+  animateFoundPath(foundNode, buttonsToEnable){
     let foundPath = [];
 
     while(foundNode.parent){
@@ -189,6 +187,9 @@ class MazeGrid{
       }else{
         clearInterval(intervalId);
         this.getNode([0,0]).setPath();
+        buttonsToEnable.forEach((button) =>{
+          button.disabled = false;
+        });
       }
     }, 5);
   }
