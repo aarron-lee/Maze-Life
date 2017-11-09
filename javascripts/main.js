@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   let root = document.querySelector('#root');
 
-  let maze = new MazeGrid(15);
+  window.maze = new MazeGrid(20);
 
   handleMazeExtras(maze);
 

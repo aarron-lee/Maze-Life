@@ -16,6 +16,8 @@ class MazeNode{
 
     this.parent = null;
 
+    this.pathNode = false;
+
     this.activeStatus = false;
   }
 
@@ -52,6 +54,15 @@ class MazeNode{
     }
   }
 
+  setPath(){
+    if(this.activeStatus === true){
+      this.activeStatus = false;
+      this.htmlnode.classList.remove('active-node');
+    }
+    this.pathNode = true;
+    this.htmlnode.classList.add('path-node');
+  }
+
   node(){
     return this.htmlnode;
   }
@@ -83,6 +94,11 @@ class MazeNode{
     this.directions.forEach(direction =>{
       this.walls[direction] = true;
     });
+    if(this.pathNode){
+      this.htmlnode.classList.remove('path-node');
+      this.pathNode = false;
+    }
+    this.parent = null;
 
     this.setWalls();
     this.disableActive();

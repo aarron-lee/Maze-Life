@@ -99,6 +99,8 @@ var MazeNode = function () {
 
     this.parent = null;
 
+    this.pathNode = false;
+
     this.activeStatus = false;
   }
 
@@ -141,6 +143,16 @@ var MazeNode = function () {
       }
     }
   }, {
+    key: "setPath",
+    value: function setPath() {
+      if (this.activeStatus === true) {
+        this.activeStatus = false;
+        this.htmlnode.classList.remove('active-node');
+      }
+      this.pathNode = true;
+      this.htmlnode.classList.add('path-node');
+    }
+  }, {
     key: "node",
     value: function node() {
       return this.htmlnode;
@@ -180,6 +192,11 @@ var MazeNode = function () {
       this.directions.forEach(function (direction) {
         _this3.walls[direction] = true;
       });
+      if (this.pathNode) {
+        this.htmlnode.classList.remove('path-node');
+        this.pathNode = false;
+      }
+      this.parent = null;
 
       this.setWalls();
       this.disableActive();
@@ -225,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var root = document.querySelector('#root');
 
-  var maze = new _maze_grid2.default(15);
+  window.maze = new _maze_grid2.default(20);
 
   handleMazeExtras(maze);
 
@@ -280,7 +297,12 @@ var MazeGrid = function () {
     this.animateMazeCreation = this.animateMazeCreation.bind(this);
     this.getNode = this.getNode.bind(this);
 
+    this.dfs = this.dfs.bind(this);
+    this.dfsearch = this.dfsearch.bind(this);
+
     this.mazeSteps = [];
+
+    this.visitedPath = [];
   }
 
   _createClass(MazeGrid, [{
@@ -290,15 +312,88 @@ var MazeGrid = function () {
         endPos = [this.dimensions - 1, this.dimensions - 1];
       }
 
-      dfsearch(endPos);
+      var stack = [];
+      var foundNode = this.dfsearch([0, 0], endPos, stack);
+
+      this.animateVisitedPath(foundNode);
     }
   }, {
     key: 'dfsearch',
-    value: function dfsearch(endPos) {}
+    value: function dfsearch(currentPos, endPos, stack) {
+      var currentNode = this.getNode(currentPos);
+      var neighborNodes = this.neighborNodes(currentPos);
+
+      if (currentPos[0] === endPos[0] && currentPos[1] === endPos[1]) {
+        //found
+        currentNode.visited = true;
+        return currentNode;
+      }
+
+      var validMoves = [];
+
+      Object.keys(neighborNodes).forEach(function (direction) {
+        if (!currentNode.walls[direction] && !neighborNodes[direction].node.visited) {
+          validMoves.push(neighborNodes[direction]);
+          neighborNodes[direction].node.parent = currentNode;
+        }
+      });
+
+      stack = stack.concat(validMoves);
+
+      while (stack.length > 0) {
+        var n = stack.pop();
+        currentNode.visited = true;
+        this.visitedPath.push(currentNode);
+        return this.dfsearch(n.node.pos, endPos, stack);
+      }
+    }
   }, {
     key: 'validMoves',
     value: function validMoves(currentPos) {
       var neighborNodes = this.neighborNodes(currentPos);
+    }
+  }, {
+    key: 'animateVisitedPath',
+    value: function animateVisitedPath(foundNode) {
+      var _this = this;
+
+      var visitedPath = this.visitedPath;
+
+      var i = 0;
+      var intervalId = null;
+      intervalId = setInterval(function () {
+        if (i < visitedPath.length) {
+          visitedPath[i].setActive();
+          i += 1;
+        } else {
+          clearInterval(intervalId);
+          _this.animateFoundPath(foundNode);
+        }
+      }, 20);
+    }
+  }, {
+    key: 'animateFoundPath',
+    value: function animateFoundPath(foundNode) {
+      var _this2 = this;
+
+      var foundPath = [];
+
+      while (foundNode.parent) {
+        foundPath.push(foundNode);
+        foundNode = foundNode.parent;
+      }
+
+      var i = 0;
+      var intervalId = null;
+      intervalId = setInterval(function () {
+        if (i < foundPath.length) {
+          foundPath[i].setPath();
+          i += 1;
+        } else {
+          clearInterval(intervalId);
+          _this2.getNode([0, 0]).setPath();
+        }
+      }, 50);
     }
   }, {
     key: 'generateMaze',
@@ -322,24 +417,24 @@ var MazeGrid = function () {
   }, {
     key: 'animateMazeCreation',
     value: function animateMazeCreation(intervalMs) {
-      var _this = this;
+      var _this3 = this;
 
       var i = 0;
 
       var intervalId = null;
       intervalId = setInterval(function () {
-        if (i < _this.mazeSteps.length) {
-          if (_this.carveWall(_this.mazeSteps[i].pos, _this.mazeSteps[i].direction)) {
-            _this.mazeNodes[_this.mazeSteps[i].pos[0]][_this.mazeSteps[i].pos[1]].setActive();
-            _this.nextPos(_this.mazeSteps[i].pos, _this.mazeSteps[i].direction).setActive();
+        if (i < _this3.mazeSteps.length) {
+          if (_this3.carveWall(_this3.mazeSteps[i].pos, _this3.mazeSteps[i].direction)) {
+            _this3.mazeNodes[_this3.mazeSteps[i].pos[0]][_this3.mazeSteps[i].pos[1]].setActive();
+            _this3.nextPos(_this3.mazeSteps[i].pos, _this3.mazeSteps[i].direction).setActive();
           }
           i += 1;
         } else {
           clearInterval(intervalId);
-          _this.mazeSteps = [];
+          _this3.mazeSteps = [];
           var generateMazeButton = document.querySelector('#generate-maze-button');
           generateMazeButton.disabled = false;
-          _this.resetActive();
+          _this3.resetActive();
         }
       }, intervalMs);
     }
@@ -364,7 +459,7 @@ var MazeGrid = function () {
   }, {
     key: 'createMaze',
     value: function createMaze(currentPos) {
-      var _this2 = this;
+      var _this4 = this;
 
       var neighborNodes = this.neighborNodes(currentPos);
       var directions = this.shuffle(Object.keys(neighborNodes));
@@ -374,9 +469,9 @@ var MazeGrid = function () {
         if (neighborNodes[direction] && neighborNodes[direction].node.visited === false) {
 
           // this.carveWall(currentPos, direction);
-          _this2.mazeSteps.push({ pos: currentPos, direction: direction });
+          _this4.mazeSteps.push({ pos: currentPos, direction: direction });
           neighborNodes[direction].node.visited = true;
-          _this2.createMaze(neighborNodes[direction].node.pos);
+          _this4.createMaze(neighborNodes[direction].node.pos);
         }
       });
     }
@@ -514,14 +609,14 @@ var MazeGrid = function () {
   }, {
     key: 'neighborNodes',
     value: function neighborNodes(pos) {
-      var _this3 = this;
+      var _this5 = this;
 
       var neighborNodes = {};
 
       var directions = ["N", "S", "E", "W"];
 
       directions.forEach(function (direction) {
-        var nextNode = _this3.nextPos(pos, direction);
+        var nextNode = _this5.nextPos(pos, direction);
         if (nextNode !== null) {
           neighborNodes[direction] = { direction: direction, node: nextNode };
         }

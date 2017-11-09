@@ -23,7 +23,12 @@ class MazeGrid{
     this.animateMazeCreation = this.animateMazeCreation.bind(this);
     this.getNode = this.getNode.bind(this);
 
+    this.dfs = this.dfs.bind(this);
+    this.dfsearch = this.dfsearch.bind(this);
+
     this.mazeSteps = [];
+
+    this.visitedPath = [];
   }
 
   dfs(endPos){
@@ -31,17 +36,83 @@ class MazeGrid{
       endPos = [this.dimensions-1, this.dimensions-1];
     }
 
-    dfsearch(endPos);
+    let stack = [];
+    let foundNode = this.dfsearch([0,0], endPos, stack);
+
+    this.animateVisitedPath(foundNode);
+
 
   }
 
-  dfsearch(endPos){
+  dfsearch(currentPos, endPos, stack){
+    let currentNode = this.getNode(currentPos);
+    let neighborNodes = this.neighborNodes(currentPos);
+
+    if((currentPos[0] === endPos[0]) && (currentPos[1] === endPos[1])){
+      //found
+      currentNode.visited = true;
+      return currentNode;
+    }
+
+    let validMoves = [];
+
+    Object.keys(neighborNodes).forEach((direction)=>{
+      if(!currentNode.walls[direction] && !neighborNodes[direction].node.visited){
+        validMoves.push( neighborNodes[direction] );
+        neighborNodes[direction].node.parent = currentNode;
+      }
+    });
+
+    stack = stack.concat(validMoves);
 
 
+    while(stack.length > 0){
+      let n = stack.pop();
+      currentNode.visited = true;
+      this.visitedPath.push(currentNode);
+      return this.dfsearch(n.node.pos, endPos, stack);
+    }
   }
 
   validMoves(currentPos){
     let neighborNodes = this.neighborNodes(currentPos);
+  }
+
+  animateVisitedPath(foundNode){
+    let visitedPath = this.visitedPath;
+
+    let i = 0;
+    let intervalId = null;
+    intervalId = setInterval( ()=>{
+      if(i < visitedPath.length){
+        visitedPath[i].setActive();
+        i+=1;
+      }else{
+        clearInterval(intervalId);
+        this.animateFoundPath(foundNode);
+      }
+    }, 20);
+  }
+
+  animateFoundPath(foundNode){
+    let foundPath = [];
+
+    while(foundNode.parent){
+      foundPath.push(foundNode);
+      foundNode = foundNode.parent;
+    }
+
+    let i = 0;
+    let intervalId = null;
+    intervalId = setInterval( ()=>{
+      if(i < foundPath.length){
+        foundPath[i].setPath();
+        i+=1;
+      }else{
+        clearInterval(intervalId);
+        this.getNode([0,0]).setPath();
+      }
+    }, 50);
   }
 
   generateMaze(intervalMs=100, startingPos=[0,0]){

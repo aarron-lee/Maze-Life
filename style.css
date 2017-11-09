@@ -69,6 +69,10 @@ button:hover{
   background-color: lightblue;
 }
 
+.path-node{
+  background-color: red;
+}
+
 .maze-node.north-wall{
   border-top: 1px solid black;
 }
