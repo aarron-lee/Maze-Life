@@ -118,7 +118,6 @@ class MazeGrid{
     return null;
   }
 
-
   neighborNodes(pos){
 
     let neighborNodes = [];
@@ -128,7 +127,7 @@ class MazeGrid{
     directions.forEach(direction =>{
       let nextNode = this.nextPos(pos, direction);
       if(nextNode !== null ){
-        neighborNodes.push({ direction: direction, node: nextNode });
+        neighborNodes.push({ direction: direction, node: nextNode, visited: nextNode.visited });
       }
     });
 
