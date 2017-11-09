@@ -22,17 +22,35 @@ class MazeGrid{
     this.createMaze = this.createMaze.bind(this);
     this.animateMazeCreation = this.animateMazeCreation.bind(this);
     this.getNode = this.getNode.bind(this);
-
     this.dfs = this.dfs.bind(this);
     this.dfsearch = this.dfsearch.bind(this);
-    this.bfs = this.bfs.bind(this)
-    this.bfsearch = this.bfsearch.bind(this)
+    this.bfs = this.bfs.bind(this);
+    this.bfsearch = this.bfsearch.bind(this);
+    this.resetPaths = this.resetPaths.bind(this);
 
     this.mazeSteps = [];
     this.visitedPath = [];
   }
 
+  generateMaze(instant=false, startingPos=[0,0]){
+    this.resetNodes();
+    this.createMaze(startingPos);
+    this.resetVisited();
+    if(!instant){
+      this.animateMazeCreation(1);
+    }
+    else{
+      for(let i = 0; i < this.mazeSteps.length; i++){
+        this.carveWall(this.mazeSteps[i].pos, this.mazeSteps[i].direction);
+      }
+      let generateMazeButton = document.querySelector('#generate-maze-button');
+      generateMazeButton.disabled = false;
+    }
+  }
+
   dfs(endPos){
+    this.resetPaths();
+
     if(!endPos){
       endPos = [this.dimensions-1, this.dimensions-1];
     }
@@ -41,6 +59,36 @@ class MazeGrid{
     let foundNode = this.dfsearch([0,0], endPos, stack);
 
     this.animateVisitedPath(foundNode);
+
+
+  }
+
+  bfs(endPos){
+    this.resetPaths();
+
+    if(!endPos){
+      endPos = [this.dimensions-1, this.dimensions-1];
+    }
+
+    let queue = [];
+    let foundNode = this.bfsearch([0,0], endPos, queue);
+    this.animateVisitedPath(foundNode);
+  }
+
+  /*  internal use methods   */
+  createMaze(currentPos){
+    let neighborNodes = this.neighborNodes(currentPos);
+    let directions = this.shuffle(Object.keys(neighborNodes));
+    this.mazeNodes[currentPos[0]][currentPos[1]].visited = true;
+
+
+    directions.forEach( direction =>{
+      if(neighborNodes[direction] && neighborNodes[direction].node.visited === false){
+        this.mazeSteps.push( {pos: currentPos, direction: direction} );
+        neighborNodes[direction].node.visited = true;
+        this.createMaze(neighborNodes[direction].node.pos);
+      }
+    });
 
 
   }
@@ -75,16 +123,6 @@ class MazeGrid{
     }
   }
 
-  bfs(endPos){
-    if(!endPos){
-      endPos = [this.dimensions-1, this.dimensions-1];
-    }
-
-    let queue = [];
-    let foundNode = this.bfsearch([0,0], endPos, queue);
-    this.animateVisitedPath(foundNode);
-  }
-
   bfsearch(currentPos, endPos, queue){
     let currentNode = this.getNode(currentPos);
     let neighborNodes = this.neighborNodes(currentPos);
@@ -114,10 +152,6 @@ class MazeGrid{
     }
   }
 
-  validMoves(currentPos){
-    let neighborNodes = this.neighborNodes(currentPos);
-  }
-
   animateVisitedPath(foundNode){
     let visitedPath = this.visitedPath;
 
@@ -135,7 +169,7 @@ class MazeGrid{
         clearInterval(intervalId);
         this.animateFoundPath(foundNode);
       }
-    }, 50);
+    }, 1);
   }
 
   animateFoundPath(foundNode){
@@ -156,17 +190,7 @@ class MazeGrid{
         clearInterval(intervalId);
         this.getNode([0,0]).setPath();
       }
-    }, 20);
-  }
-
-  resetMaze(){
-    this.mazeSteps = [];
-    this.visitedPath = [];
-    for(let i = 0 ; i < this.dimensions ; i++){
-      for(let j = 0; j < this.dimensions; j++){
-        this.mazeNodes[i][j].resetNode();
-      }
-    }
+    }, 5);
   }
 
   animateMazeCreation(intervalMs){
@@ -190,6 +214,27 @@ class MazeGrid{
     }, intervalMs);
   }
 
+  resetPaths(){
+    this.resetVisited();
+    // this.mazeSteps = [];
+    this.visitedPath = [];
+    for(let i = 0 ; i < this.dimensions ; i++){
+      for(let j = 0; j < this.dimensions; j++){
+        this.mazeNodes[i][j].removeTracesOfTravel();
+      }
+    }
+  }
+
+  resetNodes(){
+    this.mazeSteps = [];
+    this.visitedPath = [];
+    for(let i = 0 ; i < this.dimensions ; i++){
+      for(let j = 0; j < this.dimensions; j++){
+        this.mazeNodes[i][j].resetNode();
+      }
+    }
+  }
+
   resetVisited(){
     for(let i = 0 ; i < this.dimensions ; i++){
       for(let j = 0; j < this.dimensions; j++){
@@ -204,33 +249,6 @@ class MazeGrid{
         this.mazeNodes[i][j].disableActive();
       }
     }
-  }
-
-
-  generateMaze(intervalMs=100, startingPos=[0,0]){
-    this.resetMaze();
-    this.createMaze(startingPos);
-    this.resetVisited();
-    this.animateMazeCreation(intervalMs);
-  }
-
-  createMaze(currentPos){
-    let neighborNodes = this.neighborNodes(currentPos);
-    let directions = this.shuffle(Object.keys(neighborNodes));
-    this.mazeNodes[currentPos[0]][currentPos[1]].visited = true;
-
-
-    directions.forEach( direction =>{
-      if(neighborNodes[direction] && neighborNodes[direction].node.visited === false){
-
-        // this.carveWall(currentPos, direction);
-        this.mazeSteps.push( {pos: currentPos, direction: direction} );
-        neighborNodes[direction].node.visited = true;
-        this.createMaze(neighborNodes[direction].node.pos);
-      }
-    });
-
-
   }
 
   // shuffle source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array

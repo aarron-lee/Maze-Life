@@ -9,9 +9,8 @@ let handleMazeExtras = (maze) => {
 
   generateMazeForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    maze.resetMaze();
     generateMazeButton.disabled = true;
-    maze.generateMaze(parseInt(e.currentTarget[0].value));
+    maze.generateMaze(e.currentTarget[0].checked);
   });
 
 };
@@ -20,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   let root = document.querySelector('#root');
 
-  window.maze = new MazeGrid(20);
+  window.maze = new MazeGrid(60);
 
   handleMazeExtras(maze);
 

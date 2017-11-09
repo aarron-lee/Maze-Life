@@ -119,6 +119,17 @@ class MazeNode{
     this.disableActive();
   }
 
+  removeTracesOfTravel(){
+    this.parent = null;
+    this.pathNode = false;
+    this.activeStatus = false;
+    this.isCurrent = false;
+    this.visited = false;
+
+    this.htmlnode.className="maze-node";
+    this.setWalls();
+  }
+
 }
 
 export default MazeNode;
