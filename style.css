@@ -15,6 +15,10 @@ body{
   box-sizing: border-box;
 }
 
+.active-node{
+  background-color: red;
+}
+
 .maze-node.north-wall{
   border-top: 1px solid black;
 }

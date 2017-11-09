@@ -96,6 +96,8 @@ var MazeNode = function () {
     this.htmlnode.classList.add("maze-node");
     this.htmlnode.id = "node-" + pos[0] + "-" + pos[1];
     this.setWalls();
+
+    this.activeStatus = false;
   }
 
   _createClass(MazeNode, [{
@@ -108,6 +110,25 @@ var MazeNode = function () {
         return direction;
       }
       return null;
+    }
+  }, {
+    key: "toggleActive",
+    value: function toggleActive() {
+      if (this.activeStatus) {
+        this.activeStatus = false;
+        this.htmlnode.classList.remove('active-node');
+      } else {
+        this.activeStatus = true;
+        this.htmlnode.classList.add('active-node');
+      }
+    }
+  }, {
+    key: "setActive",
+    value: function setActive() {
+      if (this.activeStatus === false) {
+        this.activeStatus = true;
+        this.htmlnode.classList.add('active-node');
+      }
     }
   }, {
     key: "node",
@@ -171,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.mount = document.querySelector('#root');
 
-  window.grid = new _maze_grid2.default();
+  window.grid = new _maze_grid2.default(20);
 
   root.appendChild(grid.grid);
 });
@@ -221,17 +242,38 @@ var MazeGrid = function () {
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
     this.createMaze = this.createMaze.bind(this);
+
+    this.mazeSteps = [];
   }
 
   _createClass(MazeGrid, [{
     key: 'generateMaze',
     value: function generateMaze() {
+      var _this = this;
+
       var startingPos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+      var intervalMs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
 
 
       this.createMaze(startingPos);
 
       this.resetVisited();
+
+      var i = 0;
+
+      var intervalId = null;
+      intervalId = setInterval(function () {
+        if (i < _this.mazeSteps.length) {
+          if (_this.carveWall(_this.mazeSteps[i].pos, _this.mazeSteps[i].direction)) {
+            _this.mazeNodes[_this.mazeSteps[i].pos[0]][_this.mazeSteps[i].pos[1]].setActive();
+            _this.nextPos(_this.mazeSteps[i].pos, _this.mazeSteps[i].direction).setActive();
+          }
+          i += 1;
+        } else {
+          clearInterval(intervalId);
+          _this.mazeSteps = [];
+        }
+      }, intervalMs);
     }
   }, {
     key: 'resetVisited',
@@ -245,7 +287,7 @@ var MazeGrid = function () {
   }, {
     key: 'createMaze',
     value: function createMaze(currentPos) {
-      var _this = this;
+      var _this2 = this;
 
       var neighborNodes = this.neighborNodes(currentPos);
       var directions = this.shuffle(Object.keys(neighborNodes));
@@ -254,9 +296,10 @@ var MazeGrid = function () {
       directions.forEach(function (direction) {
         if (neighborNodes[direction] && neighborNodes[direction].node.visited === false) {
 
-          _this.carveWall(currentPos, direction);
+          // this.carveWall(currentPos, direction);
+          _this2.mazeSteps.push({ pos: currentPos, direction: direction });
           neighborNodes[direction].node.visited = true;
-          _this.createMaze(neighborNodes[direction].node.pos);
+          _this2.createMaze(neighborNodes[direction].node.pos);
         }
       });
     }
@@ -391,14 +434,14 @@ var MazeGrid = function () {
   }, {
     key: 'neighborNodes',
     value: function neighborNodes(pos) {
-      var _this2 = this;
+      var _this3 = this;
 
       var neighborNodes = {};
 
       var directions = ["N", "S", "E", "W"];
 
       directions.forEach(function (direction) {
-        var nextNode = _this2.nextPos(pos, direction);
+        var nextNode = _this3.nextPos(pos, direction);
         if (nextNode !== null) {
           neighborNodes[direction] = { direction: direction, node: nextNode };
         }

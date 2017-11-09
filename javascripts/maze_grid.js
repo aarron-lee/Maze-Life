@@ -20,13 +20,32 @@ class MazeGrid{
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
     this.createMaze = this.createMaze.bind(this);
+
+
+    this.mazeSteps = [];
   }
 
-  generateMaze(startingPos=[0,0]){
+  generateMaze(startingPos=[0,0], intervalMs=300){
 
     this.createMaze(startingPos);
 
     this.resetVisited();
+
+    let i = 0;
+
+    let intervalId = null;
+    intervalId = setInterval( ()=>{
+      if(i < this.mazeSteps.length){
+        if( this.carveWall(this.mazeSteps[i].pos, this.mazeSteps[i].direction)){
+          this.mazeNodes[this.mazeSteps[i].pos[0]][this.mazeSteps[i].pos[1]].setActive();
+          this.nextPos(this.mazeSteps[i].pos, this.mazeSteps[i].direction).setActive();
+        }
+        i+=1;
+      }else{
+        clearInterval(intervalId);
+        this.mazeSteps = [];
+      }
+    }, intervalMs);
 
   }
 
@@ -47,7 +66,8 @@ class MazeGrid{
     directions.forEach( direction =>{
       if(neighborNodes[direction] && neighborNodes[direction].node.visited === false){
 
-        this.carveWall(currentPos, direction);
+        // this.carveWall(currentPos, direction);
+        this.mazeSteps.push( {pos: currentPos, direction: direction} );
         neighborNodes[direction].node.visited = true;
         this.createMaze(neighborNodes[direction].node.pos);
       }

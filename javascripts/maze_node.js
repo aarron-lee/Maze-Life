@@ -13,6 +13,8 @@ class MazeNode{
     this.htmlnode.classList.add("maze-node");
     this.htmlnode.id = `node-${pos[0]}-${pos[1]}`;
     this.setWalls();
+
+    this.activeStatus = false;
   }
 
   carveWall(direction){
@@ -23,6 +25,23 @@ class MazeNode{
       return direction;
     }
     return null;
+  }
+
+  toggleActive(){
+    if(this.activeStatus){
+      this.activeStatus = false;
+      this.htmlnode.classList.remove('active-node');
+    }else{
+      this.activeStatus = true;
+      this.htmlnode.classList.add('active-node');
+    }
+  }
+
+  setActive(){
+    if(this.activeStatus === false){
+      this.activeStatus = true;
+      this.htmlnode.classList.add('active-node');
+    }
   }
 
   node(){
