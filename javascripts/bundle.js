@@ -220,12 +220,36 @@ var MazeGrid = function () {
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
+    this.createMaze = this.createMaze.bind(this);
   }
 
   _createClass(MazeGrid, [{
     key: 'generateMaze',
     value: function generateMaze() {
       var startingPos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+
+
+      this.createMaze(startingPos, startingPos);
+    }
+  }, {
+    key: 'createMaze',
+    value: function createMaze(currentPos, startingPos) {
+      var currentNode = this.mazeNodes[currentPos[0]][currentPos[1]];
+      var unvisitedNeighbors = this.unvisitedNeighborNodes(currentPos);
+      if (unvisitedNeighbors.length > 0) {
+        var nextNode = this.sample(unvisitedNeighbors);
+        var nextDirection = nextNode.direction;
+        var nextPos = nextNode.node.pos;
+
+        currentNode.visited = true;
+        this.carveWall(currentPos, nextDirection);
+
+        this.createMaze(nextPos, startingPos);
+      }
+
+      if (currentPos[0] === startingPos[0] && currentPos[1] === startingPos[1]) {
+        return;
+      }
     }
   }, {
     key: 'constructGrid',
@@ -371,6 +395,11 @@ var MazeGrid = function () {
         return false;
       }
       return true;
+    }
+  }, {
+    key: 'sample',
+    value: function sample(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
   }]);
 

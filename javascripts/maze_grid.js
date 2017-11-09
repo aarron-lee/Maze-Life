@@ -19,10 +19,32 @@ class MazeGrid{
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
+    this.createMaze = this.createMaze.bind(this);
   }
 
   generateMaze(startingPos=[0,0]){
 
+    this.createMaze(startingPos, startingPos);
+
+  }
+
+  createMaze(currentPos, startingPos){
+    let currentNode = this.mazeNodes[currentPos[0]][currentPos[1]];
+    let unvisitedNeighbors = this.unvisitedNeighborNodes(currentPos);
+    if(unvisitedNeighbors.length > 0){
+      let nextNode = this.sample( unvisitedNeighbors );
+      let nextDirection = nextNode.direction;
+      let nextPos = nextNode.node.pos;
+
+      currentNode.visited = true;
+      this.carveWall(currentPos, nextDirection);
+
+      this.createMaze(nextPos, startingPos);
+    }
+
+    if(( currentPos[0] === startingPos[0]) && (currentPos[1] === startingPos[1])){
+      return;
+    }
 
   }
 
@@ -159,6 +181,9 @@ class MazeGrid{
     return true;
   }
 
+  sample(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+  }
 
 }
 
