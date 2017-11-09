@@ -17,7 +17,7 @@ class MazeGrid{
     this.carveWallsBetweenNodes = this.carveWallsBetweenNodes.bind(this);
     this.nextPos = this.nextPos.bind(this);
     this.validPos = this.validPos.bind(this);
-
+    this.neighborNodes = this.neighborNodes.bind(this);
   }
 
 
@@ -117,6 +117,23 @@ class MazeGrid{
       return this.mazeNodes[nextPos[0]][nextPos[1]];
     }
     return null;
+  }
+
+
+  neighborNodes(pos){
+
+    let neighborNodes = [];
+
+    let directions = ["N", "S", "E", "W"];
+
+    directions.forEach(direction =>{
+      let nextPos = this.nextPos(pos, direction);
+      if(nextPos !== null ){
+        neighborNodes.push({ direction: direction, node: nextPos });
+      }
+    });
+
+    return neighborNodes;
   }
 
   validPos(pos){

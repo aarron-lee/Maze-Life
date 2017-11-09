@@ -218,6 +218,7 @@ var MazeGrid = function () {
     this.carveWallsBetweenNodes = this.carveWallsBetweenNodes.bind(this);
     this.nextPos = this.nextPos.bind(this);
     this.validPos = this.validPos.bind(this);
+    this.neighborNodes = this.neighborNodes.bind(this);
   }
 
   _createClass(MazeGrid, [{
@@ -326,6 +327,24 @@ var MazeGrid = function () {
         return this.mazeNodes[nextPos[0]][nextPos[1]];
       }
       return null;
+    }
+  }, {
+    key: 'neighborNodes',
+    value: function neighborNodes(pos) {
+      var _this = this;
+
+      var neighborNodes = [];
+
+      var directions = ["N", "S", "E", "W"];
+
+      directions.forEach(function (direction) {
+        var nextPos = _this.nextPos(pos, direction);
+        if (nextPos !== null) {
+          neighborNodes.push({ direction: direction, node: nextPos });
+        }
+      });
+
+      return neighborNodes;
     }
   }, {
     key: 'validPos',
