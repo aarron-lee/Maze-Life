@@ -50,7 +50,7 @@ class MazeGrid{
     let intervalId = null;
     intervalId = setInterval( ()=>{
       if(i < this.mazeSteps.length){
-        if( this.carveWall(this.mazeSteps[i].pos, this.mazeSteps[i].direction)){
+        if( this.carveWall(this.mazeSteps[i].pos, this.mazeSteps[i].direction) ){
           this.mazeNodes[this.mazeSteps[i].pos[0]][this.mazeSteps[i].pos[1]].setActive();
           this.nextPos(this.mazeSteps[i].pos, this.mazeSteps[i].direction).setActive();
         }
@@ -60,6 +60,7 @@ class MazeGrid{
         this.mazeSteps = [];
         let generateMazeButton = document.querySelector('#generate-maze-button');
         generateMazeButton.disabled = false;
+        this.resetActive();
       }
     }, intervalMs);
   }
@@ -68,6 +69,13 @@ class MazeGrid{
     for(let i = 0 ; i < this.dimensions ; i++){
       for(let j = 0; j < this.dimensions; j++){
         this.mazeNodes[i][j].visited = false;
+      }
+    }
+  }
+  resetActive(){
+    for(let i = 0 ; i < this.dimensions ; i++){
+      for(let j = 0; j < this.dimensions; j++){
+        this.mazeNodes[i][j].disableActive();
       }
     }
   }

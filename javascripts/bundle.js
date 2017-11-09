@@ -322,6 +322,7 @@ var MazeGrid = function () {
           _this.mazeSteps = [];
           var generateMazeButton = document.querySelector('#generate-maze-button');
           generateMazeButton.disabled = false;
+          _this.resetActive();
         }
       }, intervalMs);
     }
@@ -331,6 +332,15 @@ var MazeGrid = function () {
       for (var i = 0; i < this.dimensions; i++) {
         for (var j = 0; j < this.dimensions; j++) {
           this.mazeNodes[i][j].visited = false;
+        }
+      }
+    }
+  }, {
+    key: 'resetActive',
+    value: function resetActive() {
+      for (var i = 0; i < this.dimensions; i++) {
+        for (var j = 0; j < this.dimensions; j++) {
+          this.mazeNodes[i][j].disableActive();
         }
       }
     }
