@@ -19,7 +19,7 @@ class MazeGrid{
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
-    // this.createMaze = this.createMaze.bind(this);
+    this.createMaze = this.createMaze.bind(this);
   }
 
   generateMaze(startingPos=[0,0]){
