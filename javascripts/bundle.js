@@ -209,17 +209,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var handleMazeExtras = function handleMazeExtras(maze) {
 
   var generateMazeForm = document.querySelector('#generate-maze-form');
+  var generateMazeButton = document.querySelector('#generate-maze-button');
 
   generateMazeForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    maze.generateMaze(parseInt(e.currentTarget[0].value));
-  });
-
-  var resetMazeButton = document.querySelector('#reset-maze-button');
-
-  resetMazeButton.addEventListener("click", function (e) {
-    e.preventDefault();
     maze.resetMaze();
+    generateMazeButton.disabled = true;
+    maze.generateMaze(parseInt(e.currentTarget[0].value));
   });
 };
 
@@ -324,6 +320,8 @@ var MazeGrid = function () {
         } else {
           clearInterval(intervalId);
           _this.mazeSteps = [];
+          var generateMazeButton = document.querySelector('#generate-maze-button');
+          generateMazeButton.disabled = false;
         }
       }, intervalMs);
     }

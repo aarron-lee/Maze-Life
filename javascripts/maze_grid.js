@@ -58,6 +58,8 @@ class MazeGrid{
       }else{
         clearInterval(intervalId);
         this.mazeSteps = [];
+        let generateMazeButton = document.querySelector('#generate-maze-button');
+        generateMazeButton.disabled = false;
       }
     }, intervalMs);
   }

@@ -39,6 +39,12 @@ body{
   margin: 10px;
 }
 
+
+#generate-maze-button:disabled{
+  background-color: skyblue;
+}
+
+
 button{
   padding: 15px;
   background-color: #40a0c7;
