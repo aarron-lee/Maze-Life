@@ -42,11 +42,10 @@ class MazeGrid{
     if(this.validPos(pos)){
       if(this.checkIfLegal(pos, direction)){
         this.carveWallsBetweenNodes(pos, direction);
+        return true;
       }else{
         return false;
       }
-
-      return true;
     }else{
       return false;
     }
@@ -127,9 +126,9 @@ class MazeGrid{
     let directions = ["N", "S", "E", "W"];
 
     directions.forEach(direction =>{
-      let nextPos = this.nextPos(pos, direction);
-      if(nextPos !== null ){
-        neighborNodes.push({ direction: direction, node: nextPos });
+      let nextNode = this.nextPos(pos, direction);
+      if(nextNode !== null ){
+        neighborNodes.push({ direction: direction, node: nextNode });
       }
     });
 

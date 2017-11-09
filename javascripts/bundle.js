@@ -244,11 +244,10 @@ var MazeGrid = function () {
       if (this.validPos(pos)) {
         if (this.checkIfLegal(pos, direction)) {
           this.carveWallsBetweenNodes(pos, direction);
+          return true;
         } else {
           return false;
         }
-
-        return true;
       } else {
         return false;
       }
@@ -338,9 +337,9 @@ var MazeGrid = function () {
       var directions = ["N", "S", "E", "W"];
 
       directions.forEach(function (direction) {
-        var nextPos = _this.nextPos(pos, direction);
-        if (nextPos !== null) {
-          neighborNodes.push({ direction: direction, node: nextPos });
+        var nextNode = _this.nextPos(pos, direction);
+        if (nextNode !== null) {
+          neighborNodes.push({ direction: direction, node: nextNode });
         }
       });
 
