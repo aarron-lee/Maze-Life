@@ -18,6 +18,12 @@ class MazeGrid{
     this.nextPos = this.nextPos.bind(this);
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
+    this.generateMaze = this.generateMaze.bind(this);
+  }
+
+  generateMaze(startingPos=[0,0]){
+
+
   }
 
 
@@ -132,6 +138,12 @@ class MazeGrid{
     });
 
     return neighborNodes;
+  }
+
+  unvisitedNeighborNodes(pos){
+    return this.neighborNodes(pos).filter(node =>{
+      return node.visited === false;
+    });
   }
 
   validPos(pos){

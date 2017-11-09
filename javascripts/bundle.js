@@ -219,9 +219,15 @@ var MazeGrid = function () {
     this.nextPos = this.nextPos.bind(this);
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
+    this.generateMaze = this.generateMaze.bind(this);
   }
 
   _createClass(MazeGrid, [{
+    key: 'generateMaze',
+    value: function generateMaze() {
+      var startingPos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    }
+  }, {
     key: 'constructGrid',
     value: function constructGrid() {
       this.grid = document.createElement('div');
@@ -344,6 +350,13 @@ var MazeGrid = function () {
       });
 
       return neighborNodes;
+    }
+  }, {
+    key: 'unvisitedNeighborNodes',
+    value: function unvisitedNeighborNodes(pos) {
+      return this.neighborNodes(pos).filter(function (node) {
+        return node.visited === false;
+      });
     }
   }, {
     key: 'validPos',
