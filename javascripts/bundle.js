@@ -230,6 +230,17 @@ var MazeGrid = function () {
 
 
       this.createMaze(startingPos);
+
+      this.resetVisited();
+    }
+  }, {
+    key: 'resetVisited',
+    value: function resetVisited() {
+      for (var i = 0; i < this.dimensions; i++) {
+        for (var j = 0; j < this.dimensions; j++) {
+          this.mazeNodes[i][j].visited = false;
+        }
+      }
     }
   }, {
     key: 'createMaze',
@@ -242,6 +253,7 @@ var MazeGrid = function () {
 
       directions.forEach(function (direction) {
         if (neighborNodes[direction] && neighborNodes[direction].node.visited === false) {
+
           _this.carveWall(currentPos, direction);
           neighborNodes[direction].node.visited = true;
           _this.createMaze(neighborNodes[direction].node.pos);

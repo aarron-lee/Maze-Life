@@ -26,6 +26,16 @@ class MazeGrid{
 
     this.createMaze(startingPos);
 
+    this.resetVisited();
+
+  }
+
+  resetVisited(){
+    for(let i = 0 ; i < this.dimensions ; i++){
+      for(let j = 0; j < this.dimensions; j++){
+        this.mazeNodes[i][j].visited = false;
+      }
+    }
   }
 
   createMaze(currentPos){
@@ -33,13 +43,16 @@ class MazeGrid{
     let directions = this.shuffle(Object.keys(neighborNodes));
     this.mazeNodes[currentPos[0]][currentPos[1]].visited = true;
 
+
     directions.forEach( direction =>{
       if(neighborNodes[direction] && neighborNodes[direction].node.visited === false){
+
         this.carveWall(currentPos, direction);
         neighborNodes[direction].node.visited = true;
         this.createMaze(neighborNodes[direction].node.pos);
       }
     });
+
 
   }
 
