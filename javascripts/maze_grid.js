@@ -25,6 +25,8 @@ class MazeGrid{
 
     this.dfs = this.dfs.bind(this);
     this.dfsearch = this.dfsearch.bind(this);
+    this.bfs = this.bfs.bind(this)
+    this.bfsearch = this.bfsearch.bind(this)
 
     this.mazeSteps = [];
 
@@ -74,6 +76,46 @@ class MazeGrid{
     }
   }
 
+  bfs(endPos){
+    if(!endPos){
+      endPos = [this.dimensions-1, this.dimensions-1];
+    }
+
+    let queue = [];
+    let foundNode = this.bfsearch([0,0], endPos, queue);
+
+    this.animateVisitedPath(foundNode);
+  }
+
+  bfsearch(currentPos, endPos, queue){
+    let currentNode = this.getNode(currentPos);
+    let neighborNodes = this.neighborNodes(currentPos);
+
+    if((currentPos[0] === endPos[0]) && (currentPos[1] === endPos[1])){
+      //found
+      currentNode.visited = true;
+      return currentNode;
+    }
+
+    let validMoves = [];
+
+    Object.keys(neighborNodes).forEach((direction)=>{
+      if(!currentNode.walls[direction] && !neighborNodes[direction].node.visited){
+        validMoves.push( neighborNodes[direction] );
+        neighborNodes[direction].node.parent = currentNode;
+      }
+    });
+
+    queue = queue.concat(validMoves);
+
+    while(queue.length > 0){
+      let n = queue.shift();
+      currentNode.visited = true;
+      this.visitedPath.push(currentNode);
+      return this.bfsearch(n.node.pos, endPos, queue);
+    }
+  }
+
   validMoves(currentPos){
     let neighborNodes = this.neighborNodes(currentPos);
   }
@@ -85,13 +127,17 @@ class MazeGrid{
     let intervalId = null;
     intervalId = setInterval( ()=>{
       if(i < visitedPath.length){
+        visitedPath[i].toggleCurrent();
         visitedPath[i].setActive();
+        if(i+1 < visitedPath.length){
+          visitedPath[i+1].toggleCurrent();
+        }
         i+=1;
       }else{
         clearInterval(intervalId);
         this.animateFoundPath(foundNode);
       }
-    }, 20);
+    }, 50);
   }
 
   animateFoundPath(foundNode){
@@ -112,7 +158,7 @@ class MazeGrid{
         clearInterval(intervalId);
         this.getNode([0,0]).setPath();
       }
-    }, 50);
+    }, 20);
   }
 
   generateMaze(intervalMs=100, startingPos=[0,0]){
@@ -122,6 +168,8 @@ class MazeGrid{
   }
 
   resetMaze(){
+    this.mazeSteps = [];
+    this.visitedPath = [];
     for(let i = 0 ; i < this.dimensions ; i++){
       for(let j = 0; j < this.dimensions; j++){
         this.mazeNodes[i][j].resetNode();

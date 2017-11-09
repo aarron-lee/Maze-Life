@@ -73,6 +73,10 @@ button:hover{
   background-color: red;
 }
 
+.current-node{
+  background-color: green;
+}
+
 .maze-node.north-wall{
   border-top: 1px solid black;
 }

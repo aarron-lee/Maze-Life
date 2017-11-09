@@ -15,10 +15,9 @@ class MazeNode{
     this.setWalls();
 
     this.parent = null;
-
     this.pathNode = false;
-
     this.activeStatus = false;
+    this.isCurrent = false;
   }
 
   carveWall(direction){
@@ -51,6 +50,16 @@ class MazeNode{
     if(this.activeStatus === true){
       this.activeStatus = false;
       this.htmlnode.classList.remove('active-node');
+    }
+  }
+
+  toggleCurrent(){
+    if(this.isCurrent === false){
+      this.isCurrent = true;
+      this.htmlnode.classList.add('current-node');
+    }else{
+      this.isCurrent = false;
+      this.htmlnode.classList.remove('current-node');
     }
   }
 
