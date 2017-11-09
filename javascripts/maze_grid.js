@@ -19,33 +19,47 @@ class MazeGrid{
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
-    this.createMaze = this.createMaze.bind(this);
+    // this.createMaze = this.createMaze.bind(this);
   }
 
   generateMaze(startingPos=[0,0]){
 
-    this.createMaze(startingPos, startingPos);
+    this.createMaze(startingPos);
 
   }
 
-  createMaze(currentPos, startingPos){
-    let currentNode = this.mazeNodes[currentPos[0]][currentPos[1]];
-    let unvisitedNeighbors = this.unvisitedNeighborNodes(currentPos);
-    if(unvisitedNeighbors.length > 0){
-      let nextNode = this.sample( unvisitedNeighbors );
-      let nextDirection = nextNode.direction;
-      let nextPos = nextNode.node.pos;
+  createMaze(currentPos){
+    let neighborNodes = this.neighborNodes(currentPos);
+    let directions = this.shuffle(Object.keys(neighborNodes));
+    this.mazeNodes[currentPos[0]][currentPos[1]].visited = true;
 
-      currentNode.visited = true;
-      this.carveWall(currentPos, nextDirection);
+    directions.forEach( direction =>{
+      if(neighborNodes[direction] && neighborNodes[direction].node.visited === false){
+        this.carveWall(currentPos, direction);
+        neighborNodes[direction].node.visited = true;
+        this.createMaze(neighborNodes[direction].node.pos);
+      }
+    });
 
-      this.createMaze(nextPos, startingPos);
+  }
+
+  shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
     }
 
-    if(( currentPos[0] === startingPos[0]) && (currentPos[1] === startingPos[1])){
-      return;
-    }
-
+    return array;
   }
 
 
@@ -148,25 +162,25 @@ class MazeGrid{
 
   neighborNodes(pos){
 
-    let neighborNodes = [];
+    let neighborNodes = {};
 
     let directions = ["N", "S", "E", "W"];
 
     directions.forEach(direction =>{
       let nextNode = this.nextPos(pos, direction);
       if(nextNode !== null ){
-        neighborNodes.push({ direction: direction, node: nextNode, visited: nextNode.visited });
+        neighborNodes[direction] = { direction: direction, node: nextNode };
       }
     });
 
     return neighborNodes;
   }
 
-  unvisitedNeighborNodes(pos){
-    return this.neighborNodes(pos).filter(node =>{
-      return node.visited === false;
-    });
-  }
+  // unvisitedNeighborNodes(pos){
+  //   return this.neighborNodes(pos).filter(node =>{
+  //     return node.visited === false;
+  //   });
+  // }
 
   validPos(pos){
     if(pos.length < 2){

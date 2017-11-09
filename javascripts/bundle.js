@@ -220,7 +220,7 @@ var MazeGrid = function () {
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
-    this.createMaze = this.createMaze.bind(this);
+    // this.createMaze = this.createMaze.bind(this);
   }
 
   _createClass(MazeGrid, [{
@@ -229,27 +229,46 @@ var MazeGrid = function () {
       var startingPos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
 
 
-      this.createMaze(startingPos, startingPos);
+      this.createMaze(startingPos);
     }
   }, {
     key: 'createMaze',
-    value: function createMaze(currentPos, startingPos) {
-      var currentNode = this.mazeNodes[currentPos[0]][currentPos[1]];
-      var unvisitedNeighbors = this.unvisitedNeighborNodes(currentPos);
-      if (unvisitedNeighbors.length > 0) {
-        var nextNode = this.sample(unvisitedNeighbors);
-        var nextDirection = nextNode.direction;
-        var nextPos = nextNode.node.pos;
+    value: function createMaze(currentPos) {
+      var _this = this;
 
-        currentNode.visited = true;
-        this.carveWall(currentPos, nextDirection);
+      var neighborNodes = this.neighborNodes(currentPos);
+      var directions = this.shuffle(Object.keys(neighborNodes));
+      this.mazeNodes[currentPos[0]][currentPos[1]].visited = true;
 
-        this.createMaze(nextPos, startingPos);
+      directions.forEach(function (direction) {
+        if (neighborNodes[direction] && neighborNodes[direction].node.visited === false) {
+          _this.carveWall(currentPos, direction);
+          neighborNodes[direction].node.visited = true;
+          _this.createMaze(neighborNodes[direction].node.pos);
+        }
+      });
+    }
+  }, {
+    key: 'shuffle',
+    value: function shuffle(array) {
+      var currentIndex = array.length,
+          temporaryValue = void 0,
+          randomIndex = void 0;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
       }
 
-      if (currentPos[0] === startingPos[0] && currentPos[1] === startingPos[1]) {
-        return;
-      }
+      return array;
     }
   }, {
     key: 'constructGrid',
@@ -360,28 +379,28 @@ var MazeGrid = function () {
   }, {
     key: 'neighborNodes',
     value: function neighborNodes(pos) {
-      var _this = this;
+      var _this2 = this;
 
-      var neighborNodes = [];
+      var neighborNodes = {};
 
       var directions = ["N", "S", "E", "W"];
 
       directions.forEach(function (direction) {
-        var nextNode = _this.nextPos(pos, direction);
+        var nextNode = _this2.nextPos(pos, direction);
         if (nextNode !== null) {
-          neighborNodes.push({ direction: direction, node: nextNode, visited: nextNode.visited });
+          neighborNodes[direction] = { direction: direction, node: nextNode };
         }
       });
 
       return neighborNodes;
     }
-  }, {
-    key: 'unvisitedNeighborNodes',
-    value: function unvisitedNeighborNodes(pos) {
-      return this.neighborNodes(pos).filter(function (node) {
-        return node.visited === false;
-      });
-    }
+
+    // unvisitedNeighborNodes(pos){
+    //   return this.neighborNodes(pos).filter(node =>{
+    //     return node.visited === false;
+    //   });
+    // }
+
   }, {
     key: 'validPos',
     value: function validPos(pos) {
