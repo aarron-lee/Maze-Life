@@ -14,6 +14,8 @@ class MazeNode{
     this.htmlnode.id = `node-${pos[0]}-${pos[1]}`;
     this.setWalls();
 
+    this.resetNode = this.resetNode.bind(this);
+
     this.parent = null;
     this.pathNode = false;
     this.activeStatus = false;
@@ -23,7 +25,7 @@ class MazeNode{
   carveWall(direction){
     if(direction && this.directions.includes(direction)){
       this.walls[direction] = false;
-      this.resetWalls();
+      this.removeWalls();
       this.setWalls();
       return direction;
     }
@@ -46,6 +48,7 @@ class MazeNode{
       this.htmlnode.classList.add('active-node');
     }
   }
+
   disableActive(){
     if(this.activeStatus === true){
       this.activeStatus = false;
@@ -64,12 +67,13 @@ class MazeNode{
   }
 
   setPath(){
-    if(this.activeStatus === true){
-      this.activeStatus = false;
+    if(this.pathNode === true){
+      this.pathNode = false;
       this.htmlnode.classList.remove('active-node');
+    }else{
+      this.pathNode = true;
+      this.htmlnode.classList.add('path-node');
     }
-    this.pathNode = true;
-    this.htmlnode.classList.add('path-node');
   }
 
   node(){
@@ -91,7 +95,7 @@ class MazeNode{
     }
   }
 
-  resetWalls(){
+  removeWalls(){
     let classes = ["north-wall", "south-wall", "east-wall", "west-wall"];
 
     classes.forEach( c => {
@@ -103,11 +107,13 @@ class MazeNode{
     this.directions.forEach(direction =>{
       this.walls[direction] = true;
     });
-    if(this.pathNode){
-      this.htmlnode.classList.remove('path-node');
-      this.pathNode = false;
-    }
+
     this.parent = null;
+    this.pathNode = false;
+    this.activeStatus = false;
+    this.isCurrent = false;
+    this.visited = false;
+    this.htmlnode.className="maze-node";
 
     this.setWalls();
     this.disableActive();

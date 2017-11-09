@@ -29,7 +29,6 @@ class MazeGrid{
     this.bfsearch = this.bfsearch.bind(this)
 
     this.mazeSteps = [];
-
     this.visitedPath = [];
   }
 
@@ -83,7 +82,6 @@ class MazeGrid{
 
     let queue = [];
     let foundNode = this.bfsearch([0,0], endPos, queue);
-
     this.animateVisitedPath(foundNode);
   }
 
@@ -161,12 +159,6 @@ class MazeGrid{
     }, 20);
   }
 
-  generateMaze(intervalMs=100, startingPos=[0,0]){
-    this.createMaze(startingPos);
-    this.resetVisited();
-    this.animateMazeCreation(intervalMs);
-  }
-
   resetMaze(){
     this.mazeSteps = [];
     this.visitedPath = [];
@@ -212,6 +204,14 @@ class MazeGrid{
         this.mazeNodes[i][j].disableActive();
       }
     }
+  }
+
+
+  generateMaze(intervalMs=100, startingPos=[0,0]){
+    this.resetMaze();
+    this.createMaze(startingPos);
+    this.resetVisited();
+    this.animateMazeCreation(intervalMs);
   }
 
   createMaze(currentPos){
