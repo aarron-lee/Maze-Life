@@ -60,6 +60,9 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   handleSearchExtras(maze);
 
+  maze.generateMaze(true, []);
+
+
   root.appendChild(maze.grid);
 
 

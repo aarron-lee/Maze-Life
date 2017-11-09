@@ -304,6 +304,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   handleSearchExtras(maze);
 
+  maze.generateMaze(true, []);
+
   root.appendChild(maze.grid);
 });
 
