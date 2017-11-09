@@ -198,11 +198,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // window.node = new MazeNode([1,2]);
 
-  window.mount = document.querySelector('#root');
+  var root = document.querySelector('#root');
 
-  window.grid = new _maze_grid2.default(15);
+  var maze = new _maze_grid2.default(15);
 
-  root.appendChild(grid.grid);
+  var genMazeButton = document.querySelector('#generate-maze-button');
+
+  genMazeButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    maze.generateMaze();
+  });
+
+  root.appendChild(maze.grid);
 });
 
 /***/ }),
@@ -259,7 +266,7 @@ var MazeGrid = function () {
     key: 'generateMaze',
     value: function generateMaze() {
       var startingPos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
-      var intervalMs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
+      var intervalMs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
 
       this.createMaze(startingPos);

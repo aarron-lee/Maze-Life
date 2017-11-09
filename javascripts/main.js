@@ -7,11 +7,18 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   // window.node = new MazeNode([1,2]);
 
-  window.mount = document.querySelector('#root');
+  let root = document.querySelector('#root');
 
-  window.grid = new MazeGrid(15);
+  let maze = new MazeGrid(15);
 
-  root.appendChild(grid.grid);
+  let genMazeButton = document.querySelector('#generate-maze-button');
+
+  genMazeButton.addEventListener("click", (e)=>{
+    e.preventDefault();
+    maze.generateMaze();
+  });
+
+  root.appendChild(maze.grid);
 
 
 });
