@@ -21,7 +21,7 @@ class MazeGrid{
     this.generateMaze = this.generateMaze.bind(this);
     this.createMaze = this.createMaze.bind(this);
     this.animateMazeCreation = this.animateMazeCreation.bind(this);
-
+    this.getNode = this.getNode.bind(this);
 
     this.mazeSteps = [];
   }
@@ -38,6 +38,10 @@ class MazeGrid{
   dfsearch(endPos){
 
 
+  }
+
+  validMoves(currentPos){
+    let neighborNodes = this.neighborNodes(currentPos);
   }
 
   generateMaze(intervalMs=100, startingPos=[0,0]){
@@ -255,8 +259,8 @@ class MazeGrid{
     return true;
   }
 
-  sample(arr){
-    return arr[Math.floor(Math.random()*arr.length)];
+  getNode(pos){
+    return this.mazeNodes[ pos[0]][ pos[1] ];
   }
 
 }

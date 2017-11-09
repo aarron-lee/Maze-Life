@@ -278,6 +278,7 @@ var MazeGrid = function () {
     this.generateMaze = this.generateMaze.bind(this);
     this.createMaze = this.createMaze.bind(this);
     this.animateMazeCreation = this.animateMazeCreation.bind(this);
+    this.getNode = this.getNode.bind(this);
 
     this.mazeSteps = [];
   }
@@ -294,6 +295,11 @@ var MazeGrid = function () {
   }, {
     key: 'dfsearch',
     value: function dfsearch(endPos) {}
+  }, {
+    key: 'validMoves',
+    value: function validMoves(currentPos) {
+      var neighborNodes = this.neighborNodes(currentPos);
+    }
   }, {
     key: 'generateMaze',
     value: function generateMaze() {
@@ -538,9 +544,9 @@ var MazeGrid = function () {
       return true;
     }
   }, {
-    key: 'sample',
-    value: function sample(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
+    key: 'getNode',
+    value: function getNode(pos) {
+      return this.mazeNodes[pos[0]][pos[1]];
     }
   }]);
 
