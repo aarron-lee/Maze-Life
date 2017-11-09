@@ -16,7 +16,7 @@ body{
 }
 
 .active-node{
-  background-color: red;
+  background-color: lightblue;
 }
 
 .maze-node.north-wall{

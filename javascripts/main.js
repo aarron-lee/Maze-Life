@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   window.mount = document.querySelector('#root');
 
-  window.grid = new MazeGrid(20);
+  window.grid = new MazeGrid(15);
 
   root.appendChild(grid.grid);
 

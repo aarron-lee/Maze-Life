@@ -43,6 +43,12 @@ class MazeNode{
       this.htmlnode.classList.add('active-node');
     }
   }
+  disableActive(){
+    if(this.activeStatus === true){
+      this.activeStatus = false;
+      this.htmlnode.classList.remove('active-node');
+    }
+  }
 
   node(){
     return this.htmlnode;

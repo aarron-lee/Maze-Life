@@ -131,6 +131,14 @@ var MazeNode = function () {
       }
     }
   }, {
+    key: "disableActive",
+    value: function disableActive() {
+      if (this.activeStatus === true) {
+        this.activeStatus = false;
+        this.htmlnode.classList.remove('active-node');
+      }
+    }
+  }, {
     key: "node",
     value: function node() {
       return this.htmlnode;
@@ -192,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.mount = document.querySelector('#root');
 
-  window.grid = new _maze_grid2.default(20);
+  window.grid = new _maze_grid2.default(15);
 
   root.appendChild(grid.grid);
 });
