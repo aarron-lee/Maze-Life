@@ -97,6 +97,8 @@ var MazeNode = function () {
     this.htmlnode.id = "node-" + pos[0] + "-" + pos[1];
     this.setWalls();
 
+    this.parent = null;
+
     this.activeStatus = false;
   }
 
@@ -281,6 +283,28 @@ var MazeGrid = function () {
   }
 
   _createClass(MazeGrid, [{
+    key: 'dfs',
+    value: function dfs(endPos) {
+      if (!endPos) {
+        endPos = [this.dimensions - 1, this.dimensions - 1];
+      }
+
+      dfsearch(endPos);
+    }
+  }, {
+    key: 'dfsearch',
+    value: function dfsearch(endPos) {}
+  }, {
+    key: 'generateMaze',
+    value: function generateMaze() {
+      var intervalMs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
+      var startingPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+
+      this.createMaze(startingPos);
+      this.resetVisited();
+      this.animateMazeCreation(intervalMs);
+    }
+  }, {
     key: 'resetMaze',
     value: function resetMaze() {
       for (var i = 0; i < this.dimensions; i++) {
@@ -288,19 +312,6 @@ var MazeGrid = function () {
           this.mazeNodes[i][j].resetNode();
         }
       }
-    }
-  }, {
-    key: 'generateMaze',
-    value: function generateMaze() {
-      var intervalMs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
-      var startingPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
-
-
-      this.createMaze(startingPos);
-
-      this.resetVisited();
-
-      this.animateMazeCreation(intervalMs);
     }
   }, {
     key: 'animateMazeCreation',
@@ -363,6 +374,9 @@ var MazeGrid = function () {
         }
       });
     }
+
+    // shuffle source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
   }, {
     key: 'shuffle',
     value: function shuffle(array) {
@@ -509,13 +523,6 @@ var MazeGrid = function () {
 
       return neighborNodes;
     }
-
-    // unvisitedNeighborNodes(pos){
-    //   return this.neighborNodes(pos).filter(node =>{
-    //     return node.visited === false;
-    //   });
-    // }
-
   }, {
     key: 'validPos',
     value: function validPos(pos) {

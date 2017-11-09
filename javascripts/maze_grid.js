@@ -26,22 +26,32 @@ class MazeGrid{
     this.mazeSteps = [];
   }
 
+  dfs(endPos){
+    if(!endPos){
+      endPos = [this.dimensions-1, this.dimensions-1];
+    }
+
+    dfsearch(endPos);
+
+  }
+
+  dfsearch(endPos){
+
+
+  }
+
+  generateMaze(intervalMs=100, startingPos=[0,0]){
+    this.createMaze(startingPos);
+    this.resetVisited();
+    this.animateMazeCreation(intervalMs);
+  }
+
   resetMaze(){
     for(let i = 0 ; i < this.dimensions ; i++){
       for(let j = 0; j < this.dimensions; j++){
         this.mazeNodes[i][j].resetNode();
       }
     }
-  }
-
-  generateMaze(intervalMs=100, startingPos=[0,0]){
-
-    this.createMaze(startingPos);
-
-    this.resetVisited();
-
-    this.animateMazeCreation(intervalMs);
-
   }
 
   animateMazeCreation(intervalMs){
@@ -72,6 +82,7 @@ class MazeGrid{
       }
     }
   }
+
   resetActive(){
     for(let i = 0 ; i < this.dimensions ; i++){
       for(let j = 0; j < this.dimensions; j++){
@@ -99,6 +110,7 @@ class MazeGrid{
 
   }
 
+  // shuffle source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   shuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -118,7 +130,6 @@ class MazeGrid{
     return array;
   }
 
-
   constructGrid(){
     this.grid = document.createElement('div');
 
@@ -134,7 +145,6 @@ class MazeGrid{
       this.grid.appendChild(row);
     }
   }
-
 
   carveWall(pos, direction){
     if(this.validPos(pos)){
@@ -231,12 +241,6 @@ class MazeGrid{
 
     return neighborNodes;
   }
-
-  // unvisitedNeighborNodes(pos){
-  //   return this.neighborNodes(pos).filter(node =>{
-  //     return node.visited === false;
-  //   });
-  // }
 
   validPos(pos){
     if(pos.length < 2){

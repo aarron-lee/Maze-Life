@@ -14,6 +14,8 @@ class MazeNode{
     this.htmlnode.id = `node-${pos[0]}-${pos[1]}`;
     this.setWalls();
 
+    this.parent = null;
+
     this.activeStatus = false;
   }
 
