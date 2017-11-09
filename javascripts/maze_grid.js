@@ -32,19 +32,18 @@ class MazeGrid{
     this.visitedPath = [];
   }
 
-  generateMaze(instant=false, startingPos=[0,0]){
+  generateMaze(instant=false, buttonsToEnable, startingPos=[0,0]){
     this.resetNodes();
     this.createMaze(startingPos);
     this.resetVisited();
     if(!instant){
-      this.animateMazeCreation(1);
+      this.animateMazeCreation(1, buttonsToEnable);
     }
     else{
       for(let i = 0; i < this.mazeSteps.length; i++){
         this.carveWall(this.mazeSteps[i].pos, this.mazeSteps[i].direction);
       }
-      let generateMazeButton = document.querySelector('#generate-maze-button');
-      generateMazeButton.disabled = false;
+      this.enableButtons(buttonsToEnable);
     }
   }
 
@@ -187,14 +186,18 @@ class MazeGrid{
       }else{
         clearInterval(intervalId);
         this.getNode([0,0]).setPath();
-        buttonsToEnable.forEach((button) =>{
-          button.disabled = false;
-        });
+        this.enableButtons(buttonsToEnable);
       }
-    }, 5);
+    }, 2);
   }
 
-  animateMazeCreation(intervalMs){
+  enableButtons(buttons){
+    buttons.forEach((button) =>{
+      button.disabled = false;
+    });
+  }
+
+  animateMazeCreation(intervalMs, buttonsToEnable){
     let i = 0;
 
     let intervalId = null;
@@ -209,7 +212,7 @@ class MazeGrid{
         clearInterval(intervalId);
         this.mazeSteps = [];
         let generateMazeButton = document.querySelector('#generate-maze-button');
-        generateMazeButton.disabled = false;
+        this.enableButtons(buttonsToEnable);
         this.resetActive();
       }
     }, intervalMs);

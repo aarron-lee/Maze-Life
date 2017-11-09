@@ -6,11 +6,17 @@ let handleMazeExtras = (maze) => {
 
   let generateMazeForm = document.querySelector('#generate-maze-form');
   let generateMazeButton = document.querySelector('#generate-maze-button');
+  let dfsButton = document.querySelector('#dfs');
+  let bfsButton = document.querySelector('#bfs');
+
 
   generateMazeForm.addEventListener("submit", (e)=>{
     e.preventDefault();
     generateMazeButton.disabled = true;
-    maze.generateMaze(e.currentTarget[0].checked);
+    dfsButton.disabled = true;
+    bfsButton.disabled = true;
+    let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    maze.generateMaze(e.currentTarget[0].checked, buttonsToEnable);
   });
 
 };

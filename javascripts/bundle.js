@@ -256,11 +256,16 @@ var handleMazeExtras = function handleMazeExtras(maze) {
 
   var generateMazeForm = document.querySelector('#generate-maze-form');
   var generateMazeButton = document.querySelector('#generate-maze-button');
+  var dfsButton = document.querySelector('#dfs');
+  var bfsButton = document.querySelector('#bfs');
 
   generateMazeForm.addEventListener("submit", function (e) {
     e.preventDefault();
     generateMazeButton.disabled = true;
-    maze.generateMaze(e.currentTarget[0].checked);
+    dfsButton.disabled = true;
+    bfsButton.disabled = true;
+    var buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    maze.generateMaze(e.currentTarget[0].checked, buttonsToEnable);
   });
 };
 
@@ -363,19 +368,19 @@ var MazeGrid = function () {
     key: 'generateMaze',
     value: function generateMaze() {
       var instant = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      var startingPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+      var buttonsToEnable = arguments[1];
+      var startingPos = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
 
       this.resetNodes();
       this.createMaze(startingPos);
       this.resetVisited();
       if (!instant) {
-        this.animateMazeCreation(1);
+        this.animateMazeCreation(1, buttonsToEnable);
       } else {
         for (var i = 0; i < this.mazeSteps.length; i++) {
           this.carveWall(this.mazeSteps[i].pos, this.mazeSteps[i].direction);
         }
-        var generateMazeButton = document.querySelector('#generate-maze-button');
-        generateMazeButton.disabled = false;
+        this.enableButtons(buttonsToEnable);
       }
     }
   }, {
@@ -529,15 +534,20 @@ var MazeGrid = function () {
         } else {
           clearInterval(intervalId);
           _this3.getNode([0, 0]).setPath();
-          buttonsToEnable.forEach(function (button) {
-            button.disabled = false;
-          });
+          _this3.enableButtons(buttonsToEnable);
         }
-      }, 5);
+      }, 2);
+    }
+  }, {
+    key: 'enableButtons',
+    value: function enableButtons(buttons) {
+      buttons.forEach(function (button) {
+        button.disabled = false;
+      });
     }
   }, {
     key: 'animateMazeCreation',
-    value: function animateMazeCreation(intervalMs) {
+    value: function animateMazeCreation(intervalMs, buttonsToEnable) {
       var _this4 = this;
 
       var i = 0;
@@ -554,7 +564,7 @@ var MazeGrid = function () {
           clearInterval(intervalId);
           _this4.mazeSteps = [];
           var generateMazeButton = document.querySelector('#generate-maze-button');
-          generateMazeButton.disabled = false;
+          _this4.enableButtons(buttonsToEnable);
           _this4.resetActive();
         }
       }, intervalMs);
