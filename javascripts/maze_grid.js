@@ -12,6 +12,12 @@ class MazeGrid{
 
     this.constructGrid();
 
+    this.carveWall = this.carveWall.bind(this);
+    this.checkIfLegal = this.checkIfLegal.bind(this);
+    this.carveWallsBetweenNodes = this.carveWallsBetweenNodes.bind(this);
+    this.nextPos = this.nextPos.bind(this);
+    this.validPos = this.validPos.bind(this);
+
   }
 
 
@@ -34,13 +40,43 @@ class MazeGrid{
 
   carveWall(pos, direction){
     if(this.validPos(pos)){
-
-      this.carveWallsBetweenNodes(pos, direction);
+      if(this.checkIfLegal(pos, direction)){
+        this.carveWallsBetweenNodes(pos, direction);
+      }else{
+        return false;
+      }
 
       return true;
     }else{
       return false;
     }
+  }
+
+  checkIfLegal(pos, direction){
+    let row = pos[0];
+    let col = pos[1];
+
+    if(row === 0){// top row
+      if(direction == "N"){
+        return false;
+      }
+    }
+    if(row === (this.dimensions-1)){// bottom row
+      if(direction == "S"){
+        return false;
+      }
+    }
+    if(col === 0){// leftmost col
+      if(direction == "W"){
+        return false;
+      }
+    }
+    if(col === (this.dimensions-1)){// rightmost col
+      if(direction == "E"){
+        return false;
+      }
+    }
+    return true;
   }
 
   carveWallsBetweenNodes(pos, direction){
