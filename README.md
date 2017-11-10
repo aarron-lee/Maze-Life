@@ -1,5 +1,7 @@
 # Maze-Life
 
+![Maze Traversal](https://aarron-lee.github.io/images/projects/maze-life.gif)
+
 ## MVP
 
 This project will visually show path traversal algorithms through a randomly generated maze. I plan on implementing a naive recursive backtracking algorithm for maze creation, and implement a visual showing DFS, BFS, and if time allows, A* search.
