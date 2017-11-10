@@ -30,3 +30,8 @@ Day 3
 - Implement BFS traversal, and corresponding visual elements
 - Add finishing touches and visuals
 - If time allows, implement A* search
+
+
+## Credit
+
+User Icon made by https://www.flaticon.com/authors/chanut-is-industries from https://www.flaticon.com/ , is licensed by CC 3.0 BY

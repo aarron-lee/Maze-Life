@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var root = document.querySelector('#root');
 
-  window.maze = new _maze_grid2.default(60);
+  window.maze = new _maze_grid2.default(45);
 
   handleMazeExtras(maze);
 

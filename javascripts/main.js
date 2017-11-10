@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   let root = document.querySelector('#root');
 
-  window.maze = new MazeGrid(60);
+  window.maze = new MazeGrid(45);
 
   handleMazeExtras(maze);
 
