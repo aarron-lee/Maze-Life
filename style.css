@@ -37,7 +37,7 @@ h1{
 }
 
 .app-col{
-  width: 30%;
+  width: 0%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,9 +53,21 @@ h1{
 
 .app-col.maze-container{
   background: white;
-  min-width: 500px;
-  width: 40%;
+  width: 100%;
+}
 
+@media(min-width:732px){
+  .app-col.maze-container{
+    min-width: 500px;
+    width: 40%;
+  }
+  .app-col{
+    width: 40%;
+  }
+  .maze-node{
+    width: 10px;
+    height: 10px;
+  }
 }
 
 #maze-form-container > form{
@@ -89,8 +101,8 @@ button:hover{
 
 /* Maze CSS */
 .maze-node{
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   box-sizing: border-box;
 }
 
