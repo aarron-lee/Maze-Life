@@ -2,6 +2,8 @@
 
 ## Overview
 
+[Live](http://aarronlee.com/Maze-Life)
+
 This project visually shows path traversal algorithms through a randomly generated maze. This project was written with only ES6 Javascript, HTML, and CSS. Webpack was used to provide related dependencies, such as a babel transpiler.
 
 The mazes are generated with a simple recursive backtracking algorithm. The current pathfinding algorithms implemented visually are breadth-first-search (BFS) and depth-first-search (DFS).
@@ -23,7 +25,6 @@ class MazeNode{
     ...
     this.htmlnode = document.createElement('div');
     this.htmlnode.classList.add("maze-node");
-    this.htmlnode.id = `node-${pos[0]}-${pos[1]}`;
     ...
   }
   ...
@@ -91,13 +92,13 @@ The `MazeGrid` class generates the maze with a simple recursive algorithm, where
 3. Recursively repeat until the currentNode is surrounded by all visited nodes. Backtrack to the most recent node that still has unvisited nodes.
 4. Once you backtrack to the starting point, the maze is complete.
 
-There are some caveats to using this algorithm. This algorithm generates 1 unique path from a node to another. Thus, since only one path exists from one node to another, algorithms such as DFS will find the optimal path by default.
+There are some caveats to using this algorithm. This algorithm generates a unique path from one node to another. Thus, since only one path exists to any given node, algorithms such as DFS will find the optimal path by default.
 
 However, the different behaviors of path-finding algorithms can still be observed.
 
 As for animating the maze creation, the maze generation algorithm is run in advance, and the necessary `carveWall` actions are stored in an array.
 
-Then, a setInterval function is used to execute each carve action until all carve actions are completed. Afterwards, the setInterval is dismissed.
+Then, a setInterval function is used to execute each carve action in the array until all carve actions are completed. Afterwards, the setInterval is dismissed.
 
 Similarly, the DFS and BFS visual rendering is done via two setInterval functions. Once the first setInterval is completed (which renders visited nodes), it triggers a second setInterval function (which renders the path found from point A to point B).
 
