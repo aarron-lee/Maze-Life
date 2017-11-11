@@ -1,0 +1,38 @@
+
+# Maze-Life
+
+![Maze Traversal](https://aarron-lee.github.io/images/projects/maze-life.gif)
+
+## MVP
+
+This project will visually show path traversal algorithms through a randomly generated maze. I plan on implementing a naive recursive backtracking algorithm for maze creation, and implement a visual showing DFS, BFS, and if time allows, A* search.
+
+## Technlogies, Libraries, APIs
+
+I plan on using vanilla ES6 Javascript, HTML, and CSS, for to implement this project. I'll need Webpack for to provide Babel transpilers for to ensure ES6 compatibility.
+
+## Layout / UI
+
+![Maze Wireframe](docs/wireframe.png)
+
+## Implementation Timeline
+
+Day 1
+
+- Setup dependencies
+- Create basic maze canvas
+- Implement recursive maze generator
+
+Day 2
+- Finish previous day materials
+- Implement DFS traversal, and corresponding visual elements
+
+Day 3
+- Implement BFS traversal, and corresponding visual elements
+- Add finishing touches and visuals
+- If time allows, implement A* search
+
+
+## Credit
+
+User Icon made by https://www.flaticon.com/authors/chanut-is-industries from https://www.flaticon.com/ , is licensed by CC 3.0 BY

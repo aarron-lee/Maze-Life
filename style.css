@@ -49,8 +49,8 @@ h1{
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 315px;
-  height: 315px;
+  min-width: 315px;
+  min-height: 315px;
 }
 
 .app-col.maze-container{
@@ -64,15 +64,15 @@ h1{
     width: 40%;
   }
   .app-col{
-    width: 40%;
+    width: 20%;
   }
   .maze-node{
     width: 10px;
     height: 10px;
   }
   #root{
-    width: 450px;
-    height: 450px;
+    min-width: 450px;
+    min-height: 450px;
   }
 }
 
