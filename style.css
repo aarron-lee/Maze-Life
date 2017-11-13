@@ -41,7 +41,7 @@ h1{
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #03A9F4;
+  background-color: #212529;
 }
 
 #root{
@@ -54,8 +54,9 @@ h1{
 }
 
 .app-col.maze-container{
-  background: white;
+  background: #212529;
   width: 100%;
+  color: #d4d8dc;
 }
 
 @media(min-width:732px){
@@ -98,7 +99,7 @@ button{
   border-radius: 5px;
   box-sizing: border-box;
   margin: 10px;
-  color: white;
+  color: #e2e8ef;
 }
 button:hover{
   background-color: skyblue;
@@ -106,6 +107,7 @@ button:hover{
 
 
 /* Maze CSS */
+
 .maze-node{
   width: 7px;
   height: 7px;
@@ -113,7 +115,7 @@ button:hover{
 }
 
 .active-node{
-  background-color: orange;
+  background-color: #0097d4;
 }
 
 .path-node{
@@ -140,9 +142,17 @@ button:hover{
 .maze-grid{
   display: flex;
   flex-direction: column;
+  background-color: white;
 }
 
 div[id*="row-"]{
   display: flex;
   flex-direction: row;
+}
+
+
+#search-buttons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

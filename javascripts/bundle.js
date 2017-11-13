@@ -499,6 +499,8 @@ var MazeGrid = function () {
 
       var visitedPath = this.visitedPath;
 
+      var animationSpeed = document.getElementById('search-speed-slider').value;
+
       var i = 0;
       var intervalId = null;
       intervalId = setInterval(function () {
@@ -513,7 +515,7 @@ var MazeGrid = function () {
           clearInterval(intervalId);
           _this2.animateFoundPath(foundNode, buttonsToEnable);
         }
-      }, 1);
+      }, animationSpeed);
     }
   }, {
     key: 'animateFoundPath',
@@ -521,6 +523,7 @@ var MazeGrid = function () {
       var _this3 = this;
 
       var foundPath = [];
+      var animationSpeed = document.getElementById('search-speed-slider').value;
 
       while (foundNode.parent) {
         foundPath.push(foundNode);
@@ -538,7 +541,7 @@ var MazeGrid = function () {
           _this3.getNode([0, 0]).setPath();
           _this3.enableButtons(buttonsToEnable);
         }
-      }, 2);
+      }, animationSpeed);
     }
   }, {
     key: 'enableButtons',

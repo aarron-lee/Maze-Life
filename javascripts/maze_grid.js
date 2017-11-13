@@ -152,6 +152,8 @@ class MazeGrid{
   animateVisitedPath(foundNode, buttonsToEnable){
     let visitedPath = this.visitedPath;
 
+    let animationSpeed = document.getElementById('search-speed-slider').value;
+
     let i = 0;
     let intervalId = null;
     intervalId = setInterval( ()=>{
@@ -166,11 +168,12 @@ class MazeGrid{
         clearInterval(intervalId);
         this.animateFoundPath(foundNode, buttonsToEnable);
       }
-    }, 1);
+    }, animationSpeed);
   }
 
   animateFoundPath(foundNode, buttonsToEnable){
     let foundPath = [];
+    let animationSpeed = document.getElementById('search-speed-slider').value;
 
     while(foundNode.parent){
       foundPath.push(foundNode);
@@ -188,7 +191,7 @@ class MazeGrid{
         this.getNode([0,0]).setPath();
         this.enableButtons(buttonsToEnable);
       }
-    }, 2);
+    }, animationSpeed);
   }
 
   enableButtons(buttons){
