@@ -64,7 +64,7 @@ h1{
     width: 40%;
   }
   .app-col{
-    width: 20%;
+    width: 40%;
   }
   .maze-node{
     width: 10px;
@@ -113,7 +113,7 @@ button:hover{
 }
 
 .active-node{
-  background-color: lightblue;
+  background-color: orange;
 }
 
 .path-node{
