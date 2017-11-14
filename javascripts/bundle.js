@@ -258,12 +258,12 @@ var handleMazeExtras = function handleMazeExtras(maze) {
   var generateMazeButton = document.querySelector('#generate-maze-button');
   var dfsButton = document.querySelector('#dfs');
   var bfsButton = document.querySelector('#bfs');
-  var timers = document.querySelector('#timers-container');
+  var timers = document.querySelectorAll("[id^='timer-']");
 
   generateMazeForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    timers.childNodes.forEach(function (el) {
-      return el.innerHTML = '0ms';
+    timers.forEach(function (el) {
+      return el.innerHTML = "0 ms";
     });
     generateMazeButton.disabled = true;
     dfsButton.disabled = true;

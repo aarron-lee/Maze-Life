@@ -8,11 +8,11 @@ let handleMazeExtras = (maze) => {
   let generateMazeButton = document.querySelector('#generate-maze-button');
   let dfsButton = document.querySelector('#dfs');
   let bfsButton = document.querySelector('#bfs');
-  let timers = document.querySelector('#timers-container');
+  let timers = document.querySelectorAll("[id^='timer-']");
 
   generateMazeForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    timers.childNodes.forEach( el => el.innerHTML = '0ms');
+    timers.forEach(el => el.innerHTML = "0 ms");
     generateMazeButton.disabled = true;
     dfsButton.disabled = true;
     bfsButton.disabled = true;
