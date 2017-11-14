@@ -258,9 +258,13 @@ var handleMazeExtras = function handleMazeExtras(maze) {
   var generateMazeButton = document.querySelector('#generate-maze-button');
   var dfsButton = document.querySelector('#dfs');
   var bfsButton = document.querySelector('#bfs');
+  var timers = document.querySelector('#timers-container');
 
   generateMazeForm.addEventListener("submit", function (e) {
     e.preventDefault();
+    timers.childNodes.forEach(function (el) {
+      return el.innerHTML = '0ms';
+    });
     generateMazeButton.disabled = true;
     dfsButton.disabled = true;
     bfsButton.disabled = true;
@@ -367,7 +371,7 @@ var MazeGrid = function () {
   }
 
   _createClass(MazeGrid, [{
-    key: 'generateMaze',
+    key: "generateMaze",
     value: function generateMaze() {
       var instant = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var buttonsToEnable = arguments[1];
@@ -386,7 +390,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'dfs',
+    key: "dfs",
     value: function dfs(buttonsToEnable, endPos) {
       this.resetPaths();
 
@@ -397,10 +401,10 @@ var MazeGrid = function () {
       var stack = [];
       var foundNode = this.dfsearch([0, 0], endPos, stack);
 
-      this.animateVisitedPath(foundNode, buttonsToEnable);
+      this.animateVisitedPath(foundNode, buttonsToEnable, "timer-dfs");
     }
   }, {
-    key: 'bfs',
+    key: "bfs",
     value: function bfs(buttonsToEnable, endPos) {
       this.resetPaths();
 
@@ -410,13 +414,13 @@ var MazeGrid = function () {
 
       var queue = [];
       var foundNode = this.bfsearch([0, 0], endPos, queue);
-      this.animateVisitedPath(foundNode, buttonsToEnable);
+      this.animateVisitedPath(foundNode, buttonsToEnable, "timer-bfs");
     }
 
     /*  internal use methods   */
 
   }, {
-    key: 'createMaze',
+    key: "createMaze",
     value: function createMaze(currentPos) {
       var _this = this;
 
@@ -433,7 +437,7 @@ var MazeGrid = function () {
       });
     }
   }, {
-    key: 'dfsearch',
+    key: "dfsearch",
     value: function dfsearch(currentPos, endPos, stack) {
       var currentNode = this.getNode(currentPos);
       var neighborNodes = this.neighborNodes(currentPos);
@@ -463,7 +467,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'bfsearch',
+    key: "bfsearch",
     value: function bfsearch(currentPos, endPos, queue) {
       var currentNode = this.getNode(currentPos);
       var neighborNodes = this.neighborNodes(currentPos);
@@ -493,17 +497,23 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'animateVisitedPath',
-    value: function animateVisitedPath(foundNode, buttonsToEnable) {
+    key: "animateVisitedPath",
+    value: function animateVisitedPath(foundNode, buttonsToEnable, timerId) {
       var _this2 = this;
 
       var visitedPath = this.visitedPath;
-
+      var timer = document.getElementById(timerId);
       var animationSpeed = document.getElementById('search-speed-slider').value;
+
+      var startTime = new Date();
+      var currentTime = new Date();
 
       var i = 0;
       var intervalId = null;
       intervalId = setInterval(function () {
+        if (i === 0) {
+          startTime = new Date();
+        }
         if (i < visitedPath.length) {
           visitedPath[i].toggleCurrent();
           visitedPath[i].setActive();
@@ -511,6 +521,8 @@ var MazeGrid = function () {
             visitedPath[i + 1].toggleCurrent();
           }
           i += 1;
+          currentTime = new Date();
+          timer.innerHTML = currentTime.getTime() - startTime.getTime() + " ms";
         } else {
           clearInterval(intervalId);
           _this2.animateFoundPath(foundNode, buttonsToEnable);
@@ -518,12 +530,11 @@ var MazeGrid = function () {
       }, animationSpeed);
     }
   }, {
-    key: 'animateFoundPath',
+    key: "animateFoundPath",
     value: function animateFoundPath(foundNode, buttonsToEnable) {
       var _this3 = this;
 
       var foundPath = [];
-      var animationSpeed = document.getElementById('search-speed-slider').value;
 
       while (foundNode.parent) {
         foundPath.push(foundNode);
@@ -541,17 +552,17 @@ var MazeGrid = function () {
           _this3.getNode([0, 0]).setPath();
           _this3.enableButtons(buttonsToEnable);
         }
-      }, animationSpeed);
+      }, 3);
     }
   }, {
-    key: 'enableButtons',
+    key: "enableButtons",
     value: function enableButtons(buttons) {
       buttons.forEach(function (button) {
         button.disabled = false;
       });
     }
   }, {
-    key: 'animateMazeCreation',
+    key: "animateMazeCreation",
     value: function animateMazeCreation(intervalMs, buttonsToEnable) {
       var _this4 = this;
 
@@ -575,7 +586,7 @@ var MazeGrid = function () {
       }, intervalMs);
     }
   }, {
-    key: 'resetPaths',
+    key: "resetPaths",
     value: function resetPaths() {
       this.resetVisited();
       // this.mazeSteps = [];
@@ -587,7 +598,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'resetNodes',
+    key: "resetNodes",
     value: function resetNodes() {
       this.mazeSteps = [];
       this.visitedPath = [];
@@ -598,7 +609,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'resetVisited',
+    key: "resetVisited",
     value: function resetVisited() {
       for (var i = 0; i < this.dimensions; i++) {
         for (var j = 0; j < this.dimensions; j++) {
@@ -607,7 +618,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'resetActive',
+    key: "resetActive",
     value: function resetActive() {
       for (var i = 0; i < this.dimensions; i++) {
         for (var j = 0; j < this.dimensions; j++) {
@@ -619,7 +630,7 @@ var MazeGrid = function () {
     // shuffle source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
   }, {
-    key: 'shuffle',
+    key: "shuffle",
     value: function shuffle(array) {
       var currentIndex = array.length,
           temporaryValue = void 0,
@@ -641,7 +652,7 @@ var MazeGrid = function () {
       return array;
     }
   }, {
-    key: 'constructGrid',
+    key: "constructGrid",
     value: function constructGrid() {
       this.grid = document.createElement('div');
 
@@ -649,7 +660,7 @@ var MazeGrid = function () {
 
       for (var i = 0; i < this.dimensions; i++) {
         var row = document.createElement('div');
-        row.id = 'row-' + i;
+        row.id = "row-" + i;
         for (var j = 0; j < this.dimensions; j++) {
           this.mazeNodes[i][j] = new _maze_node2.default([i, j]);
           row.appendChild(this.mazeNodes[i][j].node());
@@ -658,7 +669,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'carveWall',
+    key: "carveWall",
     value: function carveWall(pos, direction) {
       if (this.validPos(pos)) {
         if (this.checkIfLegal(pos, direction)) {
@@ -672,7 +683,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'checkIfLegal',
+    key: "checkIfLegal",
     value: function checkIfLegal(pos, direction) {
       var row = pos[0];
       var col = pos[1];
@@ -704,7 +715,7 @@ var MazeGrid = function () {
       return true;
     }
   }, {
-    key: 'carveWallsBetweenNodes',
+    key: "carveWallsBetweenNodes",
     value: function carveWallsBetweenNodes(pos, direction) {
       this.mazeNodes[pos[0]][pos[1]].carveWall(direction);
       var nextPos = this.nextPos(pos, direction);
@@ -713,7 +724,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'oppositeDirection',
+    key: "oppositeDirection",
     value: function oppositeDirection(direction) {
       if (direction == "N") {
         return "S";
@@ -729,7 +740,7 @@ var MazeGrid = function () {
       }
     }
   }, {
-    key: 'nextPos',
+    key: "nextPos",
     value: function nextPos(currentPos, direction) {
       var nextPos = [currentPos[0], currentPos[1]];
       if (direction == "N") {
@@ -747,7 +758,7 @@ var MazeGrid = function () {
       return null;
     }
   }, {
-    key: 'neighborNodes',
+    key: "neighborNodes",
     value: function neighborNodes(pos) {
       var _this5 = this;
 
@@ -765,7 +776,7 @@ var MazeGrid = function () {
       return neighborNodes;
     }
   }, {
-    key: 'validPos',
+    key: "validPos",
     value: function validPos(pos) {
       if (pos.length < 2) {
         return false;
@@ -779,7 +790,7 @@ var MazeGrid = function () {
       return true;
     }
   }, {
-    key: 'getNode',
+    key: "getNode",
     value: function getNode(pos) {
       return this.mazeNodes[pos[0]][pos[1]];
     }

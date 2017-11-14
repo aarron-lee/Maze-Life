@@ -57,7 +57,7 @@ class MazeGrid{
     let stack = [];
     let foundNode = this.dfsearch([0,0], endPos, stack);
 
-    this.animateVisitedPath(foundNode, buttonsToEnable);
+    this.animateVisitedPath(foundNode, buttonsToEnable, "timer-dfs");
   }
 
   bfs(buttonsToEnable, endPos){
@@ -69,7 +69,7 @@ class MazeGrid{
 
     let queue = [];
     let foundNode = this.bfsearch([0,0], endPos, queue);
-    this.animateVisitedPath(foundNode, buttonsToEnable);
+    this.animateVisitedPath(foundNode, buttonsToEnable, "timer-bfs");
   }
 
   /*  internal use methods   */
@@ -149,14 +149,21 @@ class MazeGrid{
     }
   }
 
-  animateVisitedPath(foundNode, buttonsToEnable){
+  animateVisitedPath(foundNode, buttonsToEnable, timerId){
     let visitedPath = this.visitedPath;
-
+    let timer = document.getElementById(timerId);
     let animationSpeed = document.getElementById('search-speed-slider').value;
+
+
+    let startTime = new Date();
+    let currentTime = new Date();
 
     let i = 0;
     let intervalId = null;
     intervalId = setInterval( ()=>{
+      if(i === 0){
+        startTime = new Date();
+      }
       if(i < visitedPath.length){
         visitedPath[i].toggleCurrent();
         visitedPath[i].setActive();
@@ -164,6 +171,8 @@ class MazeGrid{
           visitedPath[i+1].toggleCurrent();
         }
         i+=1;
+        currentTime = new Date();
+        timer.innerHTML = currentTime.getTime() - startTime.getTime() + " ms";
       }else{
         clearInterval(intervalId);
         this.animateFoundPath(foundNode, buttonsToEnable);
@@ -173,7 +182,6 @@ class MazeGrid{
 
   animateFoundPath(foundNode, buttonsToEnable){
     let foundPath = [];
-    let animationSpeed = document.getElementById('search-speed-slider').value;
 
     while(foundNode.parent){
       foundPath.push(foundNode);
@@ -191,7 +199,7 @@ class MazeGrid{
         this.getNode([0,0]).setPath();
         this.enableButtons(buttonsToEnable);
       }
-    }, animationSpeed);
+    }, 3);
   }
 
   enableButtons(buttons){
