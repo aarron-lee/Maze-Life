@@ -176,7 +176,7 @@ div[id*="row-"]{
 #timers-container{
   display: flex;
   flex-direction: row;
-  background-color: white;
+  background-color: #d4d8dc;
   border-radius: 7px;
   padding: 10px ;
   box-sizing: border-box;
