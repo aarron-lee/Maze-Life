@@ -6,35 +6,29 @@
     <script type="text/javascript" src="./javascripts/bundle.js"></script>
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
 
-  <div id="app">
+    <div id="app">
 
     <div class="app-col">
-
+      <div id="root">
+        <!-- Maze goes here -->
+      </div>
     </div>
 
-    <div class="app-col maze-container">
 
+    <div class="app-col form-col">
       <h1>Maze Life</h1>
 
       <div id="maze-form-container">
-        <form id="generate-maze-form">
 
+        <form id="generate-maze-form">
           <div><label>instant?</label>&nbsp;<input type="checkbox" id="instant-checkbox" value="instant" checked/>&nbsp;<button id="generate-maze-button">Generate New Maze</button></div>
         </form>
-      </div>
-      <div id="maze-items">
-        <div id="root">
-          <!-- Maze goes here -->
-        </div>
-        <div id="timers-container">
-          <h2>Time</h2>
-          DFS <div id="timer-dfs">0 ms</div>
-          BFS <div id="timer-bfs">0 ms</div>
-        </div>
+
       </div>
       <div id="search-buttons">
         <label>Find a Path:</label>
@@ -47,6 +41,11 @@
           <button id="dfs">DFS</button>
           <button id="bfs">BFS</button>
         </div>
+      </div>
+      <div id="timers-container">
+        <h2>Time</h2>
+        DFS <div id="timer-dfs">0 ms</div>
+        BFS <div id="timer-bfs">0 ms</div>
       </div>
 
       <h3>By Aarron Lee</h3>
@@ -67,13 +66,11 @@
         <li><a href="http://www.aarronlee.com/"><img src="images/user.svg"/></a></li>
       </ul>
 
-
     </div>
 
-    <div class="app-col">
+  </div>
 
-    </div>
 
-  <div>
+
   </body>
 </html>

@@ -1,17 +1,20 @@
 body{
-  display: block;
+  display: flex;
   position:absolute;
   height:auto;
   bottom:0;
   top:0;
   left:0;
   right:0;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
 }
 
 h1{
   font-size: 55px;
-  /*color: #0097d4;*/
-  margin: 35px;
+  font-weight: 300;
+  margin: 0 10px 10px 0px;
 }
 
 h2{
@@ -35,26 +38,24 @@ h2{
 
 #app{
   display: flex;
-  height: 100%;
-  width: 100%;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .app-col{
-  width: 0%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #212529;
+  justify-content: center;
+}
+
+.form-col{
+  margin-left: 9px;
 }
 
 #root{
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-width: 315px;
-  min-height: 315px;
+
 }
 
 .app-col.maze-container{
@@ -63,36 +64,11 @@ h2{
   color: #d4d8dc;
 }
 
-@media(min-width:732px){
-  .app-col.maze-container{
-    min-width: 500px;
-    width: 40%;
-  }
-  .app-col{
-    width: 40%;
-  }
-  .maze-node{
-    width: 10px;
-    height: 10px;
-  }
-  #root{
-    min-width: 350px;
-    min-height: 350px;
-  }
-  #timers-container{
-    position: absolute;
-    left: -160px;
-    top: 80px;
-    min-width: 145px;
-    display: flex;
-    flex-direction: column!important;
-  }
-}
+
 
 #maze-form-container > form{
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 #maze-speed-slider{
@@ -121,8 +97,8 @@ button:hover{
 /* Maze CSS */
 
 .maze-node{
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   box-sizing: border-box;
 }
 
@@ -166,11 +142,6 @@ div[id*="row-"]{
 #search-buttons{
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-#maze-items{
-  position: relative;
 }
 
 #timers-container{
@@ -182,6 +153,7 @@ div[id*="row-"]{
   box-sizing: border-box;
   margin: 5px;
   color: black;
+  justify-content: center;
 }
 #timers-container h2{
   margin-right: 20px;
@@ -190,4 +162,41 @@ div[id*="row-"]{
 div[id*="timer-"]{
   text-align: right;
   margin: 0 8px;
+}
+
+
+
+
+@media(min-width:892px) and (max-width: 1247px){
+
+  #app{
+    flex-direction: row;
+  }
+
+  .maze-node{
+    width: 10px;
+    height: 10px;
+  }
+  #timers-container{
+    display: flex;
+    flex-direction: column!important;
+    max-width: 120px;
+  }
+}
+
+@media(min-width:1248px){
+
+  #app{
+    flex-direction: row;
+  }
+
+  .maze-node{
+    width: 14px;
+    height: 14px;
+  }
+  #timers-container{
+    display: flex;
+    flex-direction: column!important;
+    max-width: 120px;
+  }
 }
