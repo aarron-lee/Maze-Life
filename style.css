@@ -46,7 +46,6 @@ h2{
 }
 
 .form-col{
-  margin-left: 9px;
 }
 
 #root{
@@ -80,11 +79,10 @@ button:disabled{
 
 button{
   padding: 15px;
-  background-color: #0097d4;
-  border-radius: 5px;
+  border-radius: 3em;
   box-sizing: border-box;
   margin: 10px;
-  color: #e2e8ef;
+  border: 2px solid lightgray;
 }
 button:hover{
   background-color: skyblue;
@@ -144,8 +142,8 @@ div[id*="row-"]{
 #timers-container{
   display: flex;
   flex-direction: row;
-  background-color: #d4d8dc;
-  border-radius: 7px;
+  border-radius: 10px;
+  border: 2px solid lightgray;
   padding: 10px ;
   box-sizing: border-box;
   margin: 5px;
@@ -185,12 +183,21 @@ div[id*="timer-"]{
     flex-direction: column!important;
     max-width: 120px;
   }
+
+  .form-col{
+    margin-left: 30px;
+  }
+
 }
 
 @media(min-width:1248px){
 
   #app{
     flex-direction: row;
+  }
+
+  .form-col{
+    margin-left: 40px;
   }
 
   .maze-node{
