@@ -2,10 +2,11 @@ body{
   display: flex;
   position:absolute;
   height:auto;
-  bottom:0;
+  width: 100vw;
+  /*bottom:0;
   top:0;
   left:0;
-  right:0;
+  right:0;*/
   flex-direction: row;
   align-content: center;
   justify-content: center;
