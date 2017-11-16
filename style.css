@@ -3,10 +3,6 @@ body{
   position:absolute;
   height:auto;
   width: 100vw;
-  /*bottom:0;
-  top:0;
-  left:0;
-  right:0;*/
   flex-direction: row;
   align-content: center;
   justify-content: center;
@@ -165,8 +161,14 @@ div[id*="timer-"]{
   margin: 0 8px;
 }
 
-
-
+@media (max-width: 891px){
+  .form-col{
+    text-align: center;
+  }
+  #links{
+    justify-content: center;
+  }
+}
 
 @media(min-width:892px) and (max-width: 1247px){
 
@@ -195,6 +197,7 @@ div[id*="timer-"]{
     width: 14px;
     height: 14px;
   }
+
   #timers-container{
     display: flex;
     flex-direction: column!important;
