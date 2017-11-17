@@ -8,7 +8,7 @@ This project visually shows path traversal algorithms through a randomly generat
 
 The mazes are generated with a simple recursive backtracking algorithm. The current pathfinding algorithms implemented visually are breadth-first-search (BFS) and depth-first-search (DFS).
 
-![Maze Traversal](https://aarron-lee.github.io/images/projects/maze-life.gif)
+![Maze Traversal](http://www.aarronlee.com/images/portfolio/maze-life.gif)
 
 ## Implementation
 

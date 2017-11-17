@@ -73,7 +73,8 @@ h2{
 
 
 button:disabled{
-  background-color: skyblue;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 
@@ -85,7 +86,7 @@ button{
   border: 2px solid lightgray;
 }
 button:hover{
-  background-color: skyblue;
+  opacity: 0.5;
 }
 
 
