@@ -15,11 +15,15 @@ class MazeNode{
     this.setWalls();
 
     this.resetNode = this.resetNode.bind(this);
-
+    this.calculateHCost = this.calculateHCost.bind(this);
     this.parent = null;
     this.pathNode = false;
     this.activeStatus = false;
     this.isCurrent = false;
+
+    this.hCost = 0;
+    this.fCost = 0;
+    this.gCost = 0;
   }
 
   carveWall(direction){
@@ -115,6 +119,10 @@ class MazeNode{
     this.visited = false;
     this.htmlnode.className="maze-node";
 
+    this.hCost = 0;
+    this.fCost = 0;
+    this.gCost = 0;
+
     this.setWalls();
     this.disableActive();
   }
@@ -129,6 +137,19 @@ class MazeNode{
     this.htmlnode.className="maze-node";
     this.setWalls();
   }
+
+
+  /* A* search helper methods*/
+  calculateHCost(endPos){
+    let hCost = 0;
+
+    hCost += (endPos[0] - this.pos[0]);
+    hCost += (endPos[1] - this.pos[1]);
+
+    this.hCost = hCost;
+    return hCost;
+  }
+
 
 }
 

@@ -98,11 +98,15 @@ var MazeNode = function () {
     this.setWalls();
 
     this.resetNode = this.resetNode.bind(this);
-
+    this.calculateHCost = this.calculateHCost.bind(this);
     this.parent = null;
     this.pathNode = false;
     this.activeStatus = false;
     this.isCurrent = false;
+
+    this.hCost = 0;
+    this.fCost = 0;
+    this.gCost = 0;
   }
 
   _createClass(MazeNode, [{
@@ -213,6 +217,10 @@ var MazeNode = function () {
       this.visited = false;
       this.htmlnode.className = "maze-node";
 
+      this.hCost = 0;
+      this.fCost = 0;
+      this.gCost = 0;
+
       this.setWalls();
       this.disableActive();
     }
@@ -227,6 +235,20 @@ var MazeNode = function () {
 
       this.htmlnode.className = "maze-node";
       this.setWalls();
+    }
+
+    /* A* search helper methods*/
+
+  }, {
+    key: "calculateHCost",
+    value: function calculateHCost(endPos) {
+      var hCost = 0;
+
+      hCost += endPos[0] - this.pos[0];
+      hCost += endPos[1] - this.pos[1];
+
+      this.hCost = hCost;
+      return hCost;
     }
   }]);
 
@@ -324,6 +346,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _maze_node = __webpack_require__(0);
@@ -347,7 +371,7 @@ var MazeGrid = function () {
       this.mazeNodes[idx] = new Array(dimensions);
     }
     this.dimensions = dimensions;
-
+    this.endPos = [this.dimensions - 1, this.dimensions - 1];
     this.constructGrid();
 
     this.carveWall = this.carveWall.bind(this);
@@ -356,6 +380,7 @@ var MazeGrid = function () {
     this.nextPos = this.nextPos.bind(this);
     this.validPos = this.validPos.bind(this);
     this.neighborNodes = this.neighborNodes.bind(this);
+    this.validNeighborNodes = this.validNeighborNodes.bind(this);
     this.generateMaze = this.generateMaze.bind(this);
     this.createMaze = this.createMaze.bind(this);
     this.animateMazeCreation = this.animateMazeCreation.bind(this);
@@ -365,9 +390,12 @@ var MazeGrid = function () {
     this.bfs = this.bfs.bind(this);
     this.bfsearch = this.bfsearch.bind(this);
     this.resetPaths = this.resetPaths.bind(this);
+    this.aStar = this.aStar.bind(this);
 
     this.mazeSteps = [];
     this.visitedPath = [];
+
+    this.gCost = 10;
   }
 
   _createClass(MazeGrid, [{
@@ -395,7 +423,7 @@ var MazeGrid = function () {
       this.resetPaths();
 
       if (!endPos) {
-        endPos = [this.dimensions - 1, this.dimensions - 1];
+        endPos = this.endPos;
       }
 
       var stack = [];
@@ -409,12 +437,85 @@ var MazeGrid = function () {
       this.resetPaths();
 
       if (!endPos) {
-        endPos = [this.dimensions - 1, this.dimensions - 1];
+        endPos = this.endPos;
       }
 
       var queue = [];
       var foundNode = this.bfsearch([0, 0], endPos, queue);
       this.animateVisitedPath(foundNode, buttonsToEnable, "timer-bfs");
+    }
+  }, {
+    key: "aStar",
+    value: function aStar(buttonsToEnable, endPos) {
+      var _this = this;
+
+      var openList = new Set();
+      openList.add(this.getNode([0, 0]));
+      var closedList = new Set();
+
+      var _loop = function _loop() {
+        var currentNode = _this.getLowestFCost(openList);
+        if (currentNode.pos[0] === _this.endPos[0] && currentNode.pos[1] === _this.endPos[1]) {
+          // found
+          console.log(currentNode);
+          alert('found!');
+          return {
+            v: currentNode
+          };
+        }
+
+        closedList.add(currentNode);
+        openList.delete(currentNode);
+
+        var neighborNodes = _this.validNeighborNodes(currentNode);
+
+        Object.keys(neighborNodes).forEach(function (direction) {
+          var neighbor = neighborNodes[direction].node;
+          if (closedList.has(neighbor)) {
+            // not a valid node to process, continue
+          } else {
+
+            var gCost = currentNode.gCost + 10;
+            var gCostIsBest = false;
+
+            if (!openList.has(neighbor)) {
+              gCostIsBest = true;
+              openList.add(neighbor);
+            } else if (gCost < neighbor.gCost) {
+              gCostIsBest = true;
+            }
+
+            if (gCostIsBest) {
+              neighbor.parent = currentNode;
+              neighbor.gCost = gCost;
+              neighbor.fCost = neighbor.gCost + neighbor.hCost;
+            }
+          } // end else
+        }); // end forEach
+      };
+
+      while (openList.size > 0) {
+        var _ret = _loop();
+
+        if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
+      } // end while
+      return null;
+    }
+  }, {
+    key: "getLowestFCost",
+    value: function getLowestFCost(openSet) {
+      var openList = Array.from(openSet);
+      var fCost = openList[0].fCost ? openList[0].fCost : 0;
+      var node = openList[0];
+
+      for (var i = 1; i < openList.length; i++) {
+        var _currentNode = openList[i];
+        if (_currentNode.fCost < fCost) {
+          node = _currentNode;
+          fCost = _currentNode.fCost;
+        }
+      }
+      return node;
     }
 
     /*  internal use methods   */
@@ -422,7 +523,7 @@ var MazeGrid = function () {
   }, {
     key: "createMaze",
     value: function createMaze(currentPos) {
-      var _this = this;
+      var _this2 = this;
 
       var neighborNodes = this.neighborNodes(currentPos);
       var directions = this.shuffle(Object.keys(neighborNodes));
@@ -430,9 +531,9 @@ var MazeGrid = function () {
 
       directions.forEach(function (direction) {
         if (neighborNodes[direction] && neighborNodes[direction].node.visited === false) {
-          _this.mazeSteps.push({ pos: currentPos, direction: direction });
+          _this2.mazeSteps.push({ pos: currentPos, direction: direction });
           neighborNodes[direction].node.visited = true;
-          _this.createMaze(neighborNodes[direction].node.pos);
+          _this2.createMaze(neighborNodes[direction].node.pos);
         }
       });
     }
@@ -440,7 +541,6 @@ var MazeGrid = function () {
     key: "dfsearch",
     value: function dfsearch(currentPos, endPos, stack) {
       var currentNode = this.getNode(currentPos);
-      var neighborNodes = this.neighborNodes(currentPos);
 
       if (currentPos[0] === endPos[0] && currentPos[1] === endPos[1]) {
         //found
@@ -448,14 +548,7 @@ var MazeGrid = function () {
         return currentNode;
       }
 
-      var validMoves = [];
-
-      Object.keys(neighborNodes).forEach(function (direction) {
-        if (!currentNode.walls[direction] && !neighborNodes[direction].node.visited) {
-          validMoves.push(neighborNodes[direction]);
-          neighborNodes[direction].node.parent = currentNode;
-        }
-      });
+      var validMoves = this.validNeighborNodes(currentNode, true);
 
       stack = stack.concat(validMoves);
 
@@ -470,7 +563,6 @@ var MazeGrid = function () {
     key: "bfsearch",
     value: function bfsearch(currentPos, endPos, queue) {
       var currentNode = this.getNode(currentPos);
-      var neighborNodes = this.neighborNodes(currentPos);
 
       if (currentPos[0] === endPos[0] && currentPos[1] === endPos[1]) {
         //found
@@ -478,14 +570,7 @@ var MazeGrid = function () {
         return currentNode;
       }
 
-      var validMoves = [];
-
-      Object.keys(neighborNodes).forEach(function (direction) {
-        if (!currentNode.walls[direction] && !neighborNodes[direction].node.visited) {
-          validMoves.push(neighborNodes[direction]);
-          neighborNodes[direction].node.parent = currentNode;
-        }
-      });
+      var validMoves = this.validNeighborNodes(currentNode, true);
 
       queue = queue.concat(validMoves);
 
@@ -499,7 +584,7 @@ var MazeGrid = function () {
   }, {
     key: "animateVisitedPath",
     value: function animateVisitedPath(foundNode, buttonsToEnable, timerId) {
-      var _this2 = this;
+      var _this3 = this;
 
       var visitedPath = this.visitedPath;
       var timer = document.getElementById(timerId);
@@ -525,14 +610,14 @@ var MazeGrid = function () {
           timer.innerHTML = currentTime.getTime() - startTime.getTime() + " ms";
         } else {
           clearInterval(intervalId);
-          _this2.animateFoundPath(foundNode, buttonsToEnable);
+          _this3.animateFoundPath(foundNode, buttonsToEnable);
         }
       }, animationSpeed);
     }
   }, {
     key: "animateFoundPath",
     value: function animateFoundPath(foundNode, buttonsToEnable) {
-      var _this3 = this;
+      var _this4 = this;
 
       var foundPath = [];
 
@@ -549,8 +634,8 @@ var MazeGrid = function () {
           i += 1;
         } else {
           clearInterval(intervalId);
-          _this3.getNode([0, 0]).setPath();
-          _this3.enableButtons(buttonsToEnable);
+          _this4.getNode([0, 0]).setPath();
+          _this4.enableButtons(buttonsToEnable);
         }
       }, 3);
     }
@@ -564,24 +649,24 @@ var MazeGrid = function () {
   }, {
     key: "animateMazeCreation",
     value: function animateMazeCreation(intervalMs, buttonsToEnable) {
-      var _this4 = this;
+      var _this5 = this;
 
       var i = 0;
 
       var intervalId = null;
       intervalId = setInterval(function () {
-        if (i < _this4.mazeSteps.length) {
-          if (_this4.carveWall(_this4.mazeSteps[i].pos, _this4.mazeSteps[i].direction)) {
-            _this4.mazeNodes[_this4.mazeSteps[i].pos[0]][_this4.mazeSteps[i].pos[1]].setActive();
-            _this4.nextPos(_this4.mazeSteps[i].pos, _this4.mazeSteps[i].direction).setActive();
+        if (i < _this5.mazeSteps.length) {
+          if (_this5.carveWall(_this5.mazeSteps[i].pos, _this5.mazeSteps[i].direction)) {
+            _this5.mazeNodes[_this5.mazeSteps[i].pos[0]][_this5.mazeSteps[i].pos[1]].setActive();
+            _this5.nextPos(_this5.mazeSteps[i].pos, _this5.mazeSteps[i].direction).setActive();
           }
           i += 1;
         } else {
           clearInterval(intervalId);
-          _this4.mazeSteps = [];
+          _this5.mazeSteps = [];
           var generateMazeButton = document.querySelector('#generate-maze-button');
-          _this4.enableButtons(buttonsToEnable);
-          _this4.resetActive();
+          _this5.enableButtons(buttonsToEnable);
+          _this5.resetActive();
         }
       }, intervalMs);
     }
@@ -653,7 +738,10 @@ var MazeGrid = function () {
     }
   }, {
     key: "constructGrid",
-    value: function constructGrid() {
+    value: function constructGrid(endPos) {
+      if (!endPos) {
+        endPos = this.endPos;
+      }
       this.grid = document.createElement('div');
 
       this.grid.classList.add('maze-grid');
@@ -663,6 +751,7 @@ var MazeGrid = function () {
         row.id = "row-" + i;
         for (var j = 0; j < this.dimensions; j++) {
           this.mazeNodes[i][j] = new _maze_node2.default([i, j]);
+          this.mazeNodes[i][j].calculateHCost(endPos);
           row.appendChild(this.mazeNodes[i][j].node());
         }
         this.grid.appendChild(row);
@@ -760,20 +849,40 @@ var MazeGrid = function () {
   }, {
     key: "neighborNodes",
     value: function neighborNodes(pos) {
-      var _this5 = this;
+      var _this6 = this;
 
       var neighborNodes = {};
 
       var directions = ["N", "S", "E", "W"];
 
       directions.forEach(function (direction) {
-        var nextNode = _this5.nextPos(pos, direction);
+        var nextNode = _this6.nextPos(pos, direction);
         if (nextNode !== null) {
           neighborNodes[direction] = { direction: direction, node: nextNode };
         }
       });
 
       return neighborNodes;
+    }
+  }, {
+    key: "validNeighborNodes",
+    value: function validNeighborNodes(currentNode) {
+      var setParent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      var pos = currentNode.pos;
+      var neighborNodes = this.neighborNodes(pos);
+
+      var validMoves = [];
+
+      Object.keys(neighborNodes).forEach(function (direction) {
+        if (!currentNode.walls[direction] && !neighborNodes[direction].node.visited) {
+          validMoves.push(neighborNodes[direction]);
+          if (setParent) {
+            neighborNodes[direction].node.parent = currentNode;
+          }
+        }
+      });
+      return validMoves;
     }
   }, {
     key: "validPos",
