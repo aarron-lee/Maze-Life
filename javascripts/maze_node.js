@@ -16,14 +16,22 @@ class MazeNode{
 
     this.resetNode = this.resetNode.bind(this);
     this.calculateHCost = this.calculateHCost.bind(this);
+    this.addAllWalls = this.addAllWalls.bind(this);
     this.parent = null;
     this.pathNode = false;
     this.activeStatus = false;
     this.isCurrent = false;
 
-    this.hCost = 0;
-    this.fCost = 0;
-    this.gCost = 0;
+    this.hCost = 0.0;
+    this.fCost = 0.0;
+    this.gCost = 0.0;
+  }
+
+  addAllWalls(directions=["N", "S", "E", "W"]){
+    directions.forEach(direction =>{
+      this.walls[direction] = true;
+    });
+    this.setWalls();
   }
 
   carveWall(direction){
@@ -119,7 +127,6 @@ class MazeNode{
     this.visited = false;
     this.htmlnode.className="maze-node";
 
-    this.hCost = 0;
     this.fCost = 0;
     this.gCost = 0;
 
@@ -144,13 +151,12 @@ class MazeNode{
 
   /* A* search helper methods*/
   calculateHCost(endPos){
-    let hCost = 0;
 
-    hCost += (endPos[0] - this.pos[0]);
-    hCost += (endPos[1] - this.pos[1]);
+    let a = (endPos[0] - this.pos[0]);
+    let b = (endPos[1] - this.pos[1]);
 
-    this.hCost = hCost;
-    return hCost;
+    this.hCost = Math.sqrt((a*a + b*b));
+    return this.hCost;
   }
 
 

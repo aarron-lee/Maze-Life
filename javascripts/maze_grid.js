@@ -52,6 +52,38 @@ class MazeGrid{
     this.endPos = [this.dimensions-1, this.dimensions-1];
   }
 
+  generateAstarGrid(buttonsToEnable, startingPos=[0,0]){
+    this.resetNodes();
+
+    let directions = ["N", "S", "E", "W"];
+    this.endPos = [31, 35];
+
+    for(let i = 0 ; i < this.dimensions ; i++){
+      for(let j = 0; j < this.dimensions; j++){
+        let currentNode = this.mazeNodes[i][j];
+        directions.forEach( direction =>{
+          this.carveWall(currentNode.pos, direction);
+        });
+        currentNode.calculateHCost(this.endPos);
+      }
+    }
+
+    let row = 30;
+    for(let i = 15; i < 40; i++ ){
+      // this.getNode([35, i]).addAllWalls();
+      this.fillSurroundingWall([row, i]);
+    }
+
+    let col = 15;
+    for(let i = 31; i < 37; i++ ){
+      // this.getNode([35, i]).addAllWalls();
+      this.fillSurroundingWall([i, col]);
+    }
+
+  }
+
+
+
   dfs(buttonsToEnable, endPos){
     this.resetPaths();
 
@@ -105,6 +137,17 @@ class MazeGrid{
     return node;
   }
 
+  fillSurroundingWall(pos){
+    let row = pos[0]
+    let col = pos[1]
+
+    this.getNode([row, col-1]).addAllWalls(["E"]);
+    this.getNode([row, col+1]).addAllWalls(["W"]);
+    this.getNode([row+1, col]).addAllWalls(["N"]);
+    this.getNode([row-1, col]).addAllWalls(["S"]);
+
+  }
+  
   aStarSearch(startPos=[0,0], endPos){
 
     let openList = new Set();
@@ -130,7 +173,7 @@ class MazeGrid{
           // not a valid node to process, continue
         }else{
 
-          let gCost = currentNode.gCost + 10;
+          let gCost = currentNode.gCost + 0.1;
           let gCostIsBest = false;
 
           if(!openList.has(neighbor)){
@@ -190,25 +233,26 @@ class MazeGrid{
   }
 
   bfsearch(currentPos, endPos, queue){
-    let currentNode = this.getNode(currentPos);
+    let current = this.getNode(currentPos);
+    queue.push({node: current});
 
-    if((currentPos[0] === endPos[0]) && (currentPos[1] === endPos[1])){
-      //found
-      currentNode.visited = true;
-      return currentNode;
-    }
-
-    let validMoves = this.validNeighborNodes(currentNode, true);
-
-    queue = queue.concat(validMoves);
 
     while(queue.length > 0){
-      let n = queue.shift();
-      currentNode.visited = true;
-      this.visitedPath.push(currentNode);
-      return this.bfsearch(n.node.pos, endPos, queue);
+      let c = queue.shift()
+
+      if((c.node.pos[0] === endPos[0]) && (c.node.pos[1] === endPos[1])){
+        //found
+        c.visited = true;
+        return c.node;
+      }
+
+      let validMoves = this.validNeighborNodes(c.node, true, true);
+      queue = queue.concat(validMoves);
+      c.node.visited = true;
+      this.visitedPath.push(c.node);
     }
   }
+
 
   animateVisitedPath(foundNode, buttonsToEnable, timerId){
     let visitedPath = this.visitedPath;
@@ -360,7 +404,7 @@ class MazeGrid{
       row.id = `row-${i}`;
       for(let j = 0; j < this.dimensions; j++){
         this.mazeNodes[i][j] = new MazeNode([i,j]);
-        this.mazeNodes[i][j].calculateHCost(endPos);
+        this.mazeNodes[i][j].calculateHCost(this.endPos);
         row.appendChild(this.mazeNodes[i][j].node());
       }
       this.grid.appendChild(row);
@@ -463,7 +507,7 @@ class MazeGrid{
     return neighborNodes;
   }
 
-  validNeighborNodes(currentNode, setParent=false){
+  validNeighborNodes(currentNode, setParent=false, setVisited=false){
     let pos = currentNode.pos;
     let neighborNodes = this.neighborNodes(pos);
 
@@ -474,6 +518,9 @@ class MazeGrid{
         validMoves.push( neighborNodes[direction] );
         if(setParent){
           neighborNodes[direction].node.parent = currentNode;
+        }
+        if(setVisited){
+          neighborNodes[direction].node.visited = true;
         }
       }
     });
