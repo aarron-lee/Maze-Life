@@ -82,6 +82,34 @@ class MazeGrid{
 
   }
 
+  generateStreetGrid(buttonsToEnable, startingPos=[0,0]){
+    this.resetNodes();
+
+    let directions = ["N", "S", "E", "W"];
+    this.endPos = [this.dimensions-1, this.dimensions-1];
+
+    for(let i = 0 ; i < this.dimensions ; i++){
+      for(let j = 0; j < this.dimensions; j++){
+        let currentNode = this.mazeNodes[i][j];
+        directions.forEach( direction =>{
+          this.carveWall(currentNode.pos, direction);
+        });
+        currentNode.calculateHCost(this.endPos);
+      }
+    }
+
+    let toggle = false;
+
+    for(let i = 1 ; i < this.dimensions-1; i+=2){
+      for(let j = 0; j < this.dimensions-1; j++){
+        if(toggle){
+          this.fillSurroundingWall([i,j]);
+        }
+        toggle = !toggle;
+      }
+    }
+  }
+
 
 
   dfs(buttonsToEnable, endPos){
@@ -147,7 +175,7 @@ class MazeGrid{
     this.getNode([row-1, col]).addAllWalls(["S"]);
 
   }
-  
+
   aStarSearch(startPos=[0,0], endPos){
 
     let openList = new Set();
