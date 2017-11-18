@@ -29,7 +29,7 @@ class MazeGrid{
     this.bfsearch = this.bfsearch.bind(this);
     this.resetPaths = this.resetPaths.bind(this);
     this.aStar = this.aStar.bind(this);
-
+    this.aStarSearch = this.aStarSearch.bind(this);
     this.mazeSteps = [];
     this.visitedPath = [];
 
@@ -49,6 +49,7 @@ class MazeGrid{
       }
       this.enableButtons(buttonsToEnable);
     }
+    this.endPos = [this.dimensions-1, this.dimensions-1];
   }
 
   dfs(buttonsToEnable, endPos){
@@ -76,18 +77,45 @@ class MazeGrid{
     this.animateVisitedPath(foundNode, buttonsToEnable, "timer-bfs");
   }
 
-
   aStar(buttonsToEnable, endPos){
+    this.resetPaths();
+
+    if(!endPos){
+      endPos = this.endPos;
+    }
+
+    let foundNode = this.aStarSearch([0,0], endPos);
+
+    this.animateVisitedPath(foundNode, buttonsToEnable, "timer-astar");
+  }
+
+  /*  internal use methods   */
+  getLowestFCost(openSet){
+    let openList = Array.from(openSet);
+    let fCost = openList[0].fCost ? openList[0].fCost : 0;
+    let node = openList[0];
+
+    for(let i = 1; i < openList.length; i++){
+      let currentNode = openList[i];
+      if(currentNode.fCost < fCost){
+        node = currentNode;
+        fCost = currentNode.fCost;
+      }
+    }
+    return node;
+  }
+
+  aStarSearch(startPos=[0,0], endPos){
+
     let openList = new Set();
-    openList.add(this.getNode([0,0]))
+    openList.add(this.getNode(startPos))
     let closedList = new Set();
 
     while(openList.size > 0){
       let currentNode = this.getLowestFCost(openList);
-      if((currentNode.pos[0] === this.endPos[0]) && (currentNode.pos[1] === this.endPos[1])){
+      this.visitedPath.push(currentNode);
+      if((currentNode.pos[0] === endPos[0]) && (currentNode.pos[1] === endPos[1])){
         // found
-        console.log(currentNode);
-        alert('found!');
         return currentNode;
       }
 
@@ -123,22 +151,6 @@ class MazeGrid{
     return null;
   }
 
-  getLowestFCost(openSet){
-    let openList = Array.from(openSet);
-    let fCost = openList[0].fCost ? openList[0].fCost : 0;
-    let node = openList[0];
-
-    for(let i = 1; i < openList.length; i++){
-      let currentNode = openList[i];
-      if(currentNode.fCost < fCost){
-        node = currentNode;
-        fCost = currentNode.fCost;
-      }
-    }
-    return node;
-  }
-
-  /*  internal use methods   */
   createMaze(currentPos){
     let neighborNodes = this.neighborNodes(currentPos);
     let directions = this.shuffle(Object.keys(neighborNodes));

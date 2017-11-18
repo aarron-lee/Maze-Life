@@ -134,6 +134,9 @@ class MazeNode{
     this.isCurrent = false;
     this.visited = false;
 
+    this.fCost = 0;
+    this.gCost = 0;
+
     this.htmlnode.className="maze-node";
     this.setWalls();
   }

@@ -8,15 +8,20 @@ let handleMazeExtras = (maze) => {
   let generateMazeButton = document.querySelector('#generate-maze-button');
   let dfsButton = document.querySelector('#dfs');
   let bfsButton = document.querySelector('#bfs');
+  let astarButton = document.querySelector('#astar');
+
+  let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton, astarButton];
+
+  let disableButtons = (buttonsToDisable)=>{
+    buttonsToDisable.forEach( button => button.disabled = true);
+  }
+
   let timers = document.querySelectorAll("[id^='timer-']");
 
   generateMazeForm.addEventListener("submit", (e)=>{
     e.preventDefault();
     timers.forEach(el => el.innerHTML = "0 ms");
-    generateMazeButton.disabled = true;
-    dfsButton.disabled = true;
-    bfsButton.disabled = true;
-    let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    disableButtons(buttonsToEnable);
     maze.generateMaze(e.currentTarget[0].checked, buttonsToEnable);
   });
 
@@ -28,25 +33,31 @@ let handleSearchExtras = (maze) => {
   let generateMazeButton = document.querySelector('#generate-maze-button');
   let dfsButton = document.querySelector('#dfs');
   let bfsButton = document.querySelector('#bfs');
+  let astarButton = document.querySelector('#astar');
+
+  let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton, astarButton];
+
+  let disableButtons = (buttonsToDisable)=>{
+    buttonsToDisable.forEach( button => button.disabled = true);
+  }
 
   dfsButton.addEventListener("click", (e)=>{
     e.preventDefault();
-    generateMazeButton.disabled = true;
-    dfsButton.disabled = true;
-    bfsButton.disabled = true;
-    let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    disableButtons(buttonsToEnable);
     maze.dfs(buttonsToEnable);
   });
 
   bfsButton.addEventListener("click", (e)=>{
     e.preventDefault();
-    generateMazeButton.disabled = true;
-    dfsButton.disabled = true;
-    bfsButton.disabled = true;
-    let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton];
+    disableButtons(buttonsToEnable);
     maze.bfs(buttonsToEnable);
   });
 
+  astarButton.addEventListener("click", (e)=>{
+    e.preventDefault();
+    disableButtons(buttonsToEnable);
+    maze.aStar(buttonsToEnable);
+  });
 
 }
 
