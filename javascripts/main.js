@@ -2,15 +2,9 @@ import MazeNode from './maze_node';
 import MazeGrid from './maze_grid';
 
 
-let handleMazeExtras = (maze) => {
-
+let handleMazeExtras = (maze, buttonsToEnable) => {
   let generateMazeForm = document.querySelector('#generate-maze-form');
-  let generateMazeButton = document.querySelector('#generate-maze-button');
-  let dfsButton = document.querySelector('#dfs');
-  let bfsButton = document.querySelector('#bfs');
-  let astarButton = document.querySelector('#astar');
-
-  let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton, astarButton];
+  let astarGrid = document.querySelector('#generate-astar-maze-button');
 
   let disableButtons = (buttonsToDisable)=>{
     buttonsToDisable.forEach( button => button.disabled = true);
@@ -25,17 +19,21 @@ let handleMazeExtras = (maze) => {
     maze.generateMaze(e.currentTarget[0].checked, buttonsToEnable);
   });
 
+  astarGrid.addEventListener("click", (e)=>{
+    e.preventDefault();
+    maze.generateAstarGrid();
+  })
+
+
+
 };
 
 
-let handleSearchExtras = (maze) => {
-
-  let generateMazeButton = document.querySelector('#generate-maze-button');
+let handleSearchExtras = (maze, buttonsToEnable) => {
   let dfsButton = document.querySelector('#dfs');
   let bfsButton = document.querySelector('#bfs');
   let astarButton = document.querySelector('#astar');
 
-  let buttonsToEnable = [dfsButton, bfsButton, generateMazeButton, astarButton];
 
   let disableButtons = (buttonsToDisable)=>{
     buttonsToDisable.forEach( button => button.disabled = true);
@@ -64,13 +62,23 @@ let handleSearchExtras = (maze) => {
 
 document.addEventListener("DOMContentLoaded", () =>{
 
+  let generateMazeButton = document.querySelector('#generate-maze-button');
+  let dfsButton = document.querySelector('#dfs');
+  let bfsButton = document.querySelector('#bfs');
+  let astarButton = document.querySelector('#astar');
+  let astarGrid = document.querySelector('#generate-astar-maze-button');
+
+  let buttons = [dfsButton, bfsButton, generateMazeButton, astarButton, astarGrid];
+
+
+
   let root = document.querySelector('#root');
 
   window.maze = new MazeGrid(45);
 
-  handleMazeExtras(maze);
+  handleMazeExtras(maze, buttons);
 
-  handleSearchExtras(maze);
+  handleSearchExtras(maze, buttons);
 
   maze.generateMaze(true, []);
 

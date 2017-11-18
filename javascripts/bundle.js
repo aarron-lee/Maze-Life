@@ -288,15 +288,9 @@ var _maze_grid2 = _interopRequireDefault(_maze_grid);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var handleMazeExtras = function handleMazeExtras(maze) {
-
+var handleMazeExtras = function handleMazeExtras(maze, buttonsToEnable) {
   var generateMazeForm = document.querySelector('#generate-maze-form');
-  var generateMazeButton = document.querySelector('#generate-maze-button');
-  var dfsButton = document.querySelector('#dfs');
-  var bfsButton = document.querySelector('#bfs');
-  var astarButton = document.querySelector('#astar');
-
-  var buttonsToEnable = [dfsButton, bfsButton, generateMazeButton, astarButton];
+  var astarGrid = document.querySelector('#generate-astar-maze-button');
 
   var disableButtons = function disableButtons(buttonsToDisable) {
     buttonsToDisable.forEach(function (button) {
@@ -314,16 +308,17 @@ var handleMazeExtras = function handleMazeExtras(maze) {
     disableButtons(buttonsToEnable);
     maze.generateMaze(e.currentTarget[0].checked, buttonsToEnable);
   });
+
+  astarGrid.addEventListener("click", function (e) {
+    e.preventDefault();
+    maze.generateAstarGrid();
+  });
 };
 
-var handleSearchExtras = function handleSearchExtras(maze) {
-
-  var generateMazeButton = document.querySelector('#generate-maze-button');
+var handleSearchExtras = function handleSearchExtras(maze, buttonsToEnable) {
   var dfsButton = document.querySelector('#dfs');
   var bfsButton = document.querySelector('#bfs');
   var astarButton = document.querySelector('#astar');
-
-  var buttonsToEnable = [dfsButton, bfsButton, generateMazeButton, astarButton];
 
   var disableButtons = function disableButtons(buttonsToDisable) {
     buttonsToDisable.forEach(function (button) {
@@ -352,13 +347,21 @@ var handleSearchExtras = function handleSearchExtras(maze) {
 
 document.addEventListener("DOMContentLoaded", function () {
 
+  var generateMazeButton = document.querySelector('#generate-maze-button');
+  var dfsButton = document.querySelector('#dfs');
+  var bfsButton = document.querySelector('#bfs');
+  var astarButton = document.querySelector('#astar');
+  var astarGrid = document.querySelector('#generate-astar-maze-button');
+
+  var buttons = [dfsButton, bfsButton, generateMazeButton, astarButton, astarGrid];
+
   var root = document.querySelector('#root');
 
   window.maze = new _maze_grid2.default(45);
 
-  handleMazeExtras(maze);
+  handleMazeExtras(maze, buttons);
 
-  handleSearchExtras(maze);
+  handleSearchExtras(maze, buttons);
 
   maze.generateMaze(true, []);
 
