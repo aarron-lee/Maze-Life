@@ -83,6 +83,49 @@ h2{
   background-color: gray;
 }
 
+.modal-backdrop{
+  position: fixed;
+  background-color: rgba(0,0,0,0.6);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-inner{
+  background-color: white;
+  padding: 20px;
+  max-width: 400px;
+  border-radius: 1em;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.close-modal{
+  position: absolute;
+  top: -13px;
+  right: -13px;
+  width: 35px;
+  height: 35px;
+  background-color: black;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-modal:hover{
+  background-color: gray;
+  cursor: pointer;
+}
+
+.modal-inner p{
+  margin: 10px 0;
+}
+
 #maze-form-container{
   display: flex;
   flex-direction: column;
