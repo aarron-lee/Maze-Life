@@ -50,6 +50,7 @@ class MazeGrid{
     }
     this.endPos = [this.dimensions-1, this.dimensions-1];
     this.getNode(this.endPos).setGoal();
+    maze.getNode([0,0]).htmlnode.classList.add('start-node')
 
   }
 
@@ -82,6 +83,7 @@ class MazeGrid{
       // this.getNode([35, i]).addAllWalls();
       this.fillSurroundingWall([i, col]);
     }
+    maze.getNode([0,0]).htmlnode.classList.add('start-node')
 
   }
 
@@ -112,6 +114,8 @@ class MazeGrid{
         toggle = !toggle;
       }
     }
+    maze.getNode([0,0]).htmlnode.classList.add('start-node')
+
   }
 
   dfs(buttonsToEnable, endPos){

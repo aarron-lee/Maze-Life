@@ -223,6 +223,10 @@ div[id*="timer-"]{
   background-color: lightgreen;
 }
 
+.start-node{
+  background-color: lightgreen;
+}
+
 .goal-node{
   background-color: green;
 }
