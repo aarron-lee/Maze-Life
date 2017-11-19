@@ -33,7 +33,6 @@ class MazeGrid{
     this.mazeSteps = [];
     this.visitedPath = [];
 
-    this.gCost = 10;
   }
 
   generateMaze(instant=false, buttonsToEnable, startingPos=[0,0]){

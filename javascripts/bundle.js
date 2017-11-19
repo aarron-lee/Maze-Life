@@ -337,11 +337,17 @@ var handleMazeExtras = function handleMazeExtras(maze, buttonsToEnable) {
 
   astarGrid.addEventListener("click", function (e) {
     e.preventDefault();
+    timers.forEach(function (el) {
+      return el.innerHTML = "0 ms";
+    });
     maze.generateAstarGrid();
   });
 
   streetGridButton.addEventListener("click", function (e) {
     e.preventDefault();
+    timers.forEach(function (el) {
+      return el.innerHTML = "0 ms";
+    });
     maze.generateStreetGrid();
   });
 };
@@ -494,8 +500,6 @@ var MazeGrid = function () {
     this.aStarSearch = this.aStarSearch.bind(this);
     this.mazeSteps = [];
     this.visitedPath = [];
-
-    this.gCost = 10;
   }
 
   _createClass(MazeGrid, [{

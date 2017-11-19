@@ -26,11 +26,13 @@ let handleMazeExtras = (maze, buttonsToEnable) => {
 
   astarGrid.addEventListener("click", (e)=>{
     e.preventDefault();
+    timers.forEach(el => el.innerHTML = "0 ms");
     maze.generateAstarGrid();
   });
 
   streetGridButton.addEventListener("click", (e)=>{
     e.preventDefault();
+    timers.forEach(el => el.innerHTML = "0 ms");
     maze.generateStreetGrid();
   });
 };
