@@ -115,8 +115,6 @@ class MazeGrid{
     }
   }
 
-
-
   dfs(buttonsToEnable, endPos){
     this.resetPaths();
 
@@ -178,7 +176,6 @@ class MazeGrid{
     this.getNode([row, col+1]).addAllWalls(["W"]);
     this.getNode([row+1, col]).addAllWalls(["N"]);
     this.getNode([row-1, col]).addAllWalls(["S"]);
-
   }
 
   aStarSearch(startPos=[0,0], endPos){
@@ -240,8 +237,6 @@ class MazeGrid{
         this.createMaze(neighborNodes[direction].node.pos);
       }
     });
-
-
   }
 
   dfsearch(currentPos, endPos, stack){
@@ -291,7 +286,6 @@ class MazeGrid{
     let visitedPath = this.visitedPath;
     let timer = document.getElementById(timerId);
     let animationSpeed = document.getElementById('search-speed-slider').value;
-
 
     let startTime = new Date();
     let currentTime = new Date();
@@ -576,8 +570,6 @@ class MazeGrid{
   getNode(pos){
     return this.mazeNodes[ pos[0]][ pos[1] ];
   }
-
 }
-
 
 export default MazeGrid;

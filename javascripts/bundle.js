@@ -314,6 +314,7 @@ var handleMazeExtras = function handleMazeExtras(maze, buttonsToEnable) {
   var astarGrid = document.querySelector('#generate-astar-maze-button');
   var streetGridButton = document.querySelector('#generate-street-grid-button');
   var slider = document.querySelector('#search-speed-slider');
+  var checkbox = document.querySelector('#instant-checkbox');
 
   slider.defaultValue = 6;
 
@@ -331,7 +332,7 @@ var handleMazeExtras = function handleMazeExtras(maze, buttonsToEnable) {
       return el.innerHTML = "0 ms";
     });
     disableButtons(buttonsToEnable);
-    maze.generateMaze(e.currentTarget[0].checked, buttonsToEnable);
+    maze.generateMaze(checkbox.checked, buttonsToEnable);
   });
 
   astarGrid.addEventListener("click", function (e) {

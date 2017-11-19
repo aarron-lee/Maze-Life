@@ -166,7 +166,6 @@ class MazeNode{
     this.setWalls();
   }
 
-
   /* A* search helper methods*/
   calculateHCost(endPos){
 
@@ -176,8 +175,6 @@ class MazeNode{
     this.hCost = Math.sqrt((a*a + b*b));
     return this.hCost;
   }
-
-
 }
 
 export default MazeNode;
