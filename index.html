@@ -24,6 +24,10 @@
       <h1>Maze Life</h1>
 
       <div id="maze-form-container">
+        <div class="title">
+          <h2>Maze Generators:</h2>
+          <div class="modal-button" id="#generators-modal">?</div>
+        </div>
 
         <form id="generate-maze-form">
           <div><label>instant?</label>&nbsp;<input type="checkbox" id="instant-checkbox" value="instant" checked/><button id="generate-maze-button">Generate New Maze</button></div>
@@ -33,7 +37,10 @@
 
       </div>
       <div id="search-buttons">
-        <h3>Find a Path:</h3>
+        <div class="title">
+          <h2>Maze Solvers:</h2>
+          <div class="modal-button" id="#solvers-modal">?</div>
+        </div>
 
         <div>
           Fast<input type="range" id="search-speed-slider" min="1" max="50"/>Slow
@@ -45,10 +52,12 @@
         </div>
       </div>
       <div id="timers-container">
-        <h2>Time</h2>
-        DFS <div id="timer-dfs">0 ms</div>
-        BFS <div id="timer-bfs">0 ms</div>
-        A* <div id="timer-astar">0 ms</div>
+        <h2>Timers</h2>
+        <div id="timers">
+          <div>DFS <div id="timer-dfs">0 ms</div></div>
+          <div>BFS <div id="timer-bfs">0 ms</div></div>
+          <div>A* <div id="timer-astar">0 ms</div></div>
+      </div>
       </div>
 
       <h3>By Aarron Lee</h3>
