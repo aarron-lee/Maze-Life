@@ -107,6 +107,10 @@ button:hover{
 }
 
 .current-node{
+  background-color: lightgreen;
+}
+
+.goal-node{
   background-color: green;
 }
 

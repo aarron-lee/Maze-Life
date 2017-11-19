@@ -5,6 +5,10 @@ import MazeGrid from './maze_grid';
 let handleMazeExtras = (maze, buttonsToEnable) => {
   let generateMazeForm = document.querySelector('#generate-maze-form');
   let astarGrid = document.querySelector('#generate-astar-maze-button');
+  let streetGridButton = document.querySelector('#generate-street-grid-button');
+  let slider= document.querySelector('#search-speed-slider');
+
+  slider.defaultValue = 6;
 
   let disableButtons = (buttonsToDisable)=>{
     buttonsToDisable.forEach( button => button.disabled = true);
@@ -22,7 +26,14 @@ let handleMazeExtras = (maze, buttonsToEnable) => {
   astarGrid.addEventListener("click", (e)=>{
     e.preventDefault();
     maze.generateAstarGrid();
-  })
+  });
+
+  streetGridButton.addEventListener("click", (e)=>{
+    e.preventDefault();
+    maze.generateStreetGrid();
+  });
+
+
 
 
 
@@ -67,8 +78,9 @@ document.addEventListener("DOMContentLoaded", () =>{
   let bfsButton = document.querySelector('#bfs');
   let astarButton = document.querySelector('#astar');
   let astarGrid = document.querySelector('#generate-astar-maze-button');
+  let streetGridButton = document.querySelector('#generate-street-grid-button');
 
-  let buttons = [dfsButton, bfsButton, generateMazeButton, astarButton, astarGrid];
+  let buttons = [dfsButton, bfsButton, generateMazeButton, astarButton, astarGrid, streetGridButton];
 
 
 

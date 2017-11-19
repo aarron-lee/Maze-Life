@@ -104,6 +104,7 @@ var MazeNode = function () {
     this.pathNode = false;
     this.activeStatus = false;
     this.isCurrent = false;
+    this.isGoal = false;
 
     this.hCost = 0.0;
     this.fCost = 0.0;
@@ -142,6 +143,22 @@ var MazeNode = function () {
       } else {
         this.activeStatus = true;
         this.htmlnode.classList.add('active-node');
+      }
+    }
+  }, {
+    key: "setGoal",
+    value: function setGoal() {
+      if (this.isGoal === false) {
+        this.isGoal = true;
+        this.htmlnode.classList.add('goal-node');
+      }
+    }
+  }, {
+    key: "removeGoal",
+    value: function removeGoal() {
+      if (this.isGoal === true) {
+        this.isGoal = false;
+        this.htmlnode.classList.remove('goal-node');
       }
     }
   }, {
@@ -228,6 +245,7 @@ var MazeNode = function () {
       this.activeStatus = false;
       this.isCurrent = false;
       this.visited = false;
+      this.isGoal = false;
       this.htmlnode.className = "maze-node";
 
       this.fCost = 0;
@@ -247,8 +265,11 @@ var MazeNode = function () {
 
       this.fCost = 0;
       this.gCost = 0;
-
-      this.htmlnode.className = "maze-node";
+      if (!this.isGoal) {
+        this.htmlnode.className = "maze-node";
+      } else {
+        this.htmlnode.className = "maze-node goal-node";
+      }
       this.setWalls();
     }
 
@@ -291,6 +312,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var handleMazeExtras = function handleMazeExtras(maze, buttonsToEnable) {
   var generateMazeForm = document.querySelector('#generate-maze-form');
   var astarGrid = document.querySelector('#generate-astar-maze-button');
+  var streetGridButton = document.querySelector('#generate-street-grid-button');
+  var slider = document.querySelector('#search-speed-slider');
+
+  slider.defaultValue = 6;
 
   var disableButtons = function disableButtons(buttonsToDisable) {
     buttonsToDisable.forEach(function (button) {
@@ -312,6 +337,11 @@ var handleMazeExtras = function handleMazeExtras(maze, buttonsToEnable) {
   astarGrid.addEventListener("click", function (e) {
     e.preventDefault();
     maze.generateAstarGrid();
+  });
+
+  streetGridButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    maze.generateStreetGrid();
   });
 };
 
@@ -352,8 +382,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var bfsButton = document.querySelector('#bfs');
   var astarButton = document.querySelector('#astar');
   var astarGrid = document.querySelector('#generate-astar-maze-button');
+  var streetGridButton = document.querySelector('#generate-street-grid-button');
 
-  var buttons = [dfsButton, bfsButton, generateMazeButton, astarButton, astarGrid];
+  var buttons = [dfsButton, bfsButton, generateMazeButton, astarButton, astarGrid, streetGridButton];
 
   var root = document.querySelector('#root');
 
@@ -450,6 +481,7 @@ var MazeGrid = function () {
         this.enableButtons(buttonsToEnable);
       }
       this.endPos = [this.dimensions - 1, this.dimensions - 1];
+      this.getNode(this.endPos).setGoal();
     }
   }, {
     key: "generateAstarGrid",
@@ -462,6 +494,7 @@ var MazeGrid = function () {
 
       var directions = ["N", "S", "E", "W"];
       this.endPos = [31, 35];
+      this.getNode(this.endPos).setGoal();
 
       for (var i = 0; i < this.dimensions; i++) {
         var _loop = function _loop(j) {
@@ -500,6 +533,7 @@ var MazeGrid = function () {
 
       var directions = ["N", "S", "E", "W"];
       this.endPos = [this.dimensions - 1, this.dimensions - 1];
+      this.getNode(this.endPos).setGoal();
 
       for (var i = 0; i < this.dimensions; i++) {
         var _loop2 = function _loop2(j) {

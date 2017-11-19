@@ -26,17 +26,17 @@
       <div id="maze-form-container">
 
         <form id="generate-maze-form">
-          <div><label>instant?</label>&nbsp;<input type="checkbox" id="instant-checkbox" value="instant" checked/>&nbsp;<button id="generate-maze-button">Generate New Maze</button></div>
+          <div><label>instant?</label>&nbsp;<input type="checkbox" id="instant-checkbox" value="instant" checked/><button id="generate-maze-button">Generate New Maze</button></div>
         </form>
         <button id="generate-astar-maze-button">Dijkstra's Test</button>
+        <button id="generate-street-grid-button">Street Grid</button>
 
       </div>
       <div id="search-buttons">
-        <label>Find a Path:</label>
+        <h3>Find a Path:</h3>
 
         <div>
-          Fast
-          <input type="range" id="search-speed-slider" min="1" max="30"/>Slow
+          Fast<input type="range" id="search-speed-slider" min="1" max="50"/>Slow
         </div>
         <div>
           <button id="dfs">DFS</button>

@@ -50,6 +50,8 @@ class MazeGrid{
       this.enableButtons(buttonsToEnable);
     }
     this.endPos = [this.dimensions-1, this.dimensions-1];
+    this.getNode(this.endPos).setGoal();
+
   }
 
   generateAstarGrid(buttonsToEnable, startingPos=[0,0]){
@@ -57,6 +59,8 @@ class MazeGrid{
 
     let directions = ["N", "S", "E", "W"];
     this.endPos = [31, 35];
+    this.getNode(this.endPos).setGoal();
+
 
     for(let i = 0 ; i < this.dimensions ; i++){
       for(let j = 0; j < this.dimensions; j++){
@@ -87,6 +91,7 @@ class MazeGrid{
 
     let directions = ["N", "S", "E", "W"];
     this.endPos = [this.dimensions-1, this.dimensions-1];
+    this.getNode(this.endPos).setGoal();
 
     for(let i = 0 ; i < this.dimensions ; i++){
       for(let j = 0; j < this.dimensions; j++){

@@ -21,6 +21,7 @@ class MazeNode{
     this.pathNode = false;
     this.activeStatus = false;
     this.isCurrent = false;
+    this.isGoal=false;
 
     this.hCost = 0.0;
     this.fCost = 0.0;
@@ -51,6 +52,19 @@ class MazeNode{
     }else{
       this.activeStatus = true;
       this.htmlnode.classList.add('active-node');
+    }
+  }
+
+  setGoal(){
+    if(this.isGoal === false){
+      this.isGoal = true;
+      this.htmlnode.classList.add('goal-node');
+    }
+  }
+  removeGoal(){
+    if(this.isGoal === true){
+      this.isGoal = false;
+      this.htmlnode.classList.remove('goal-node');
     }
   }
 
@@ -125,6 +139,7 @@ class MazeNode{
     this.activeStatus = false;
     this.isCurrent = false;
     this.visited = false;
+    this.isGoal = false;
     this.htmlnode.className="maze-node";
 
     this.fCost = 0;
@@ -143,8 +158,11 @@ class MazeNode{
 
     this.fCost = 0;
     this.gCost = 0;
-
-    this.htmlnode.className="maze-node";
+    if(!this.isGoal){
+      this.htmlnode.className="maze-node";
+    }else{
+      this.htmlnode.className="maze-node goal-node";
+    }
     this.setWalls();
   }
 
