@@ -6,7 +6,7 @@
 
 This project visually shows path traversal algorithms through a randomly generated maze. This project was written with only ES6 Javascript, HTML, and CSS. Webpack was used to provide related dependencies, such as a babel transpiler.
 
-The mazes are generated with a simple recursive backtracking algorithm. The current pathfinding algorithms implemented visually are breadth-first-search (BFS) and depth-first-search (DFS).
+The mazes are generated with a simple recursive backtracking algorithm. The current pathfinding algorithms implemented visually are breadth-first-search (BFS), depth-first-search (DFS), and A* search.
 
 ![Maze Traversal](http://www.aarronlee.com/images/portfolio/maze-life.gif)
 
@@ -68,9 +68,7 @@ This approach effectively abstracts away any of the UI-related aspects to render
 
 ### MazeGrid
 
-Since the MazeNode class effectively abstracts away the UI-related aspects of generating a maze, we could now just implement a maze grid using these nodes.
-
-A simple 2D array is generated, with each element in the array being a MazeNode. A `grid` instance variable is created. The grid variable is a div HTMLElement, and for every MazeNode generated, it's htmlelement is appended to the grid. Later on, we can just attach the entire grid to document via the following:
+A simple 2D array is generated, with each element in the array being a MazeNode. A `grid` instance variable is created. The grid variable is a div HTMLElement, and for every MazeNode generated, the node's htmlelement is appended to the grid div. Later on, we can just attach the entire grid div to document via the following:
 
 ```
 document.addEventListener("DOMContentLoaded",
@@ -79,8 +77,6 @@ document.addEventListener("DOMContentLoaded",
 
   let maze = new MazeGrid(45);
   ...
-  maze.generateMaze(true, []);
-
   root.appendChild(maze.grid);
 }
 ```
@@ -100,15 +96,18 @@ As for animating the maze creation, the maze generation algorithm is run in adva
 
 Then, a setInterval function is used to execute each carve action in the array until all carve actions are completed. Afterwards, the setInterval is dismissed.
 
-Similarly, the DFS and BFS visual rendering is done via two setInterval functions. Once the first setInterval is completed (which renders visited nodes), it triggers a second setInterval function (which renders the path found from point A to point B).
+Similarly, path traversal rendering is done via two setInterval functions. Once the first setInterval is completed (which renders visited nodes), it triggers a second setInterval function (which renders the path found from point A to point B).
 
+
+## Dependencies
+
+Babel and Webpack are used for to enable usage of ES6 javascript.
 
 ## Todo / planned
 
-1. A* and Dikjstra's algorithm implementations (and corresponding grids for to demonstrate how they work)
-2. Other Maze Generation algorithms
-3. More Mobile friendly CSS
-
+1. Other Maze Generation algorithms
+2. Custom maze traversal algorithm
+3. Enable different maze sizes
 
 
 
