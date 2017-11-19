@@ -63,9 +63,6 @@ Thus, whenever you update the status of a wall on the node, the corresponding cs
 
 This approach effectively abstracts away any of the UI-related aspects to rendering a maze.
 
-##### Note:
- For those who are familiar with React, you may have noticed that this MazeNode is effectively a very rudimentary React component
-
 ### MazeGrid
 
 A simple 2D array is generated, with each element in the array being a MazeNode. A `grid` instance variable is created. The grid variable is a div HTMLElement, and for every MazeNode generated, the node's htmlelement is appended to the grid div. Later on, we can just attach the entire grid div to document via the following:
