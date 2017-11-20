@@ -28,9 +28,10 @@ h2{
   width: 24px;
   margin: 20px;
 }
+
 #links li:hover{
-  width: 30px;
-  margin: 20px;
+-webkit-filter: invert(70%);
+filter: invert(70%);
 }
 
 
@@ -78,6 +79,7 @@ h2{
   font-weight: 700;
   right: -35px;
   top: 0px;
+  cursor: pointer;
 }
 .modal-button:hover{
   background-color: gray;
